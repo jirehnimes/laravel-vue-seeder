@@ -1,7 +1,9 @@
+import AuthRequestsServices from '../../../../services/requests/auth.js';
+import FormHelpersServices from '../../../../services/helpers/form.js';
+
 export default {
     data() {
         return {
-            app_name: process.env.MIX_APP_NAME,
             form: {
                 first_name: '',
                 last_name: '',
@@ -17,16 +19,27 @@ export default {
             }
         }
     },
-    mounted() {
+    created() {
+        this.FormHelper = FormHelpersServices;
     },
     methods: {
-        submit: function(event) {
-            axios.post('/api/user', this.form)
+        submit(event) {
+            var that = this;
+
+            AuthRequestsServices.register(this.form)
                 .then(function(response) {
-                    console.log(response);
+                    if (response.status === 200) {
+                        // Do execute login here.
+                    }
                 })
                 .catch(function(error) {
-                    console.log(error.response.data.errors)
+                    _.isEmpty(error.first_name) ? [] : that.form_errors.first_name = error.first_name;
+                    _.isEmpty(error.last_name) ? [] : that.form_errors.last_name = error.last_name;
+                    _.isEmpty(error.email) ? [] : that.form_errors.email = error.email;
+                    _.isEmpty(error.password) ? [] : that.form_errors.password = error.password;
+
+                    that.password = '';
+                    that.password_confirmation = '';
                 });
 
             event.preventDefault();

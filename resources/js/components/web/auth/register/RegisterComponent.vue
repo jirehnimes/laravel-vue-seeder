@@ -14,21 +14,36 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>First name</label>
-                                    <input type="text" class="form-control" placeholder="First name" v-model="form.first_name">
+                                    <input type="text" class="form-control" 
+                                        :class="[FormHelper.is_invalid(form_errors.first_name)]"
+                                        placeholder="First name" v-model="form.first_name">
+                                    <div class="invalid-feedback">{{ form_errors.first_name[0] }}</div>
                                 </div>
+                                
                                 <div class="form-group">
                                     <label>Last name</label>
-                                    <input type="text" class="form-control" placeholder="Last name" v-model="form.last_name">
+                                    <input type="text" class="form-control" 
+                                        :class="[FormHelper.is_invalid(form_errors.last_name)]"
+                                        placeholder="Last name" v-model="form.last_name">
+                                    <div class="invalid-feedback">{{ form_errors.last_name[0] }}</div>
                                 </div>
+
                                 <div class="form-group">
                                     <label>Email address</label>
-                                    <input type="email" class="form-control" placeholder="Email Address" v-model="form.email">
-                                    <div class="invalid-feedback">Error here.</div>
+                                    <input type="email" class="form-control" 
+                                        :class="[FormHelper.is_invalid(form_errors.email)]" 
+                                        placeholder="Email Address" v-model="form.email">
+                                    <div class="invalid-feedback">{{ form_errors.email[0] }}</div>
                                 </div>
+
                                 <div class="form-group">
                                     <label>Password</label>
-                                    <input type="password" class="form-control" placeholder="Password" v-model="form.password">
+                                    <input type="password" class="form-control" 
+                                        :class="[FormHelper.is_invalid(form_errors.password)]"
+                                        placeholder="Password" v-model="form.password">
+                                    <div class="invalid-feedback">{{ form_errors.password[0] }}</div>
                                 </div>
+
                                 <div class="form-group">
                                     <label>Confirm Password</label>
                                     <input type="password" class="form-control" placeholder="Password" v-model="form.password_confirmation">

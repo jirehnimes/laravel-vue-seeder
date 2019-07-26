@@ -2768,7 +2768,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      app_name: "LaravelVueSeeder",
       form_email_address: '',
       form_password: ''
     };
@@ -2794,10 +2793,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _services_requests_auth_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../services/requests/auth.js */ "./resources/js/services/requests/auth.js");
+/* harmony import */ var _services_helpers_form_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../services/helpers/form.js */ "./resources/js/services/helpers/form.js");
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      app_name: "LaravelVueSeeder",
       form: {
         first_name: '',
         last_name: '',
@@ -2813,13 +2815,22 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
   },
-  mounted: function mounted() {},
+  created: function created() {
+    this.FormHelper = _services_helpers_form_js__WEBPACK_IMPORTED_MODULE_1__["default"];
+  },
   methods: {
     submit: function submit(event) {
-      axios.post('/api/user', this.form).then(function (response) {
-        console.log(response);
+      var that = this;
+      _services_requests_auth_js__WEBPACK_IMPORTED_MODULE_0__["default"].register(this.form).then(function (response) {
+        if (response.status === 200) {// Do execute login here.
+        }
       })["catch"](function (error) {
-        console.log(error.response.data.errors);
+        _.isEmpty(error.first_name) ? [] : that.form_errors.first_name = error.first_name;
+        _.isEmpty(error.last_name) ? [] : that.form_errors.last_name = error.last_name;
+        _.isEmpty(error.email) ? [] : that.form_errors.email = error.email;
+        _.isEmpty(error.password) ? [] : that.form_errors.password = error.password;
+        that.password = '';
+        that.password_confirmation = '';
       });
       event.preventDefault();
     }
@@ -40746,6 +40757,9 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: [
+                      _vm.FormHelper.is_invalid(_vm.form_errors.first_name)
+                    ],
                     attrs: { type: "text", placeholder: "First name" },
                     domProps: { value: _vm.form.first_name },
                     on: {
@@ -40756,7 +40770,11 @@ var render = function() {
                         _vm.$set(_vm.form, "first_name", $event.target.value)
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "invalid-feedback" }, [
+                    _vm._v(_vm._s(_vm.form_errors.first_name[0]))
+                  ])
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
@@ -40772,6 +40790,9 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: [
+                      _vm.FormHelper.is_invalid(_vm.form_errors.last_name)
+                    ],
                     attrs: { type: "text", placeholder: "Last name" },
                     domProps: { value: _vm.form.last_name },
                     on: {
@@ -40782,7 +40803,11 @@ var render = function() {
                         _vm.$set(_vm.form, "last_name", $event.target.value)
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "invalid-feedback" }, [
+                    _vm._v(_vm._s(_vm.form_errors.last_name[0]))
+                  ])
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
@@ -40798,6 +40823,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: [_vm.FormHelper.is_invalid(_vm.form_errors.email)],
                     attrs: { type: "email", placeholder: "Email Address" },
                     domProps: { value: _vm.form.email },
                     on: {
@@ -40811,7 +40837,7 @@ var render = function() {
                   }),
                   _vm._v(" "),
                   _c("div", { staticClass: "invalid-feedback" }, [
-                    _vm._v("Error here.")
+                    _vm._v(_vm._s(_vm.form_errors.email[0]))
                   ])
                 ]),
                 _vm._v(" "),
@@ -40828,6 +40854,9 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
+                    class: [
+                      _vm.FormHelper.is_invalid(_vm.form_errors.password)
+                    ],
                     attrs: { type: "password", placeholder: "Password" },
                     domProps: { value: _vm.form.password },
                     on: {
@@ -40838,7 +40867,11 @@ var render = function() {
                         _vm.$set(_vm.form, "password", $event.target.value)
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "invalid-feedback" }, [
+                    _vm._v(_vm._s(_vm.form_errors.password[0]))
+                  ])
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
@@ -57121,6 +57154,52 @@ var routes = [// WEB PAGES
   component: _components_404Component_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
 }];
 /* harmony default export */ __webpack_exports__["default"] = (routes);
+
+/***/ }),
+
+/***/ "./resources/js/services/helpers/form.js":
+/*!***********************************************!*\
+  !*** ./resources/js/services/helpers/form.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var FormHelpersServices = {
+  is_invalid: function is_invalid(errors) {
+    return {
+      'is-invalid': !_.isEmpty(errors)
+    };
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (FormHelpersServices);
+
+/***/ }),
+
+/***/ "./resources/js/services/requests/auth.js":
+/*!************************************************!*\
+  !*** ./resources/js/services/requests/auth.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var API_URL = '/api/user';
+var AuthRequestsServices = {
+  login: function login(form) {
+    return axios.post(API_URL, form);
+  },
+  register: function register(form) {
+    return axios.post(API_URL, form).then(function (response) {
+      return response;
+    })["catch"](function (error) {
+      throw error.response.data.errors;
+    });
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (AuthRequestsServices);
 
 /***/ }),
 

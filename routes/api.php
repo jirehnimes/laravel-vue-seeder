@@ -18,5 +18,5 @@ use Illuminate\Http\Request;
 // });
 
 // Route::middleware(['auth:api'])->group(function () {
-Route::post('user', 'UserController@register');
+Route::post('user', 'AuthController@register');
 // });
