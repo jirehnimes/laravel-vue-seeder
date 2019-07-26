@@ -5,41 +5,45 @@ export default {
     data() {
         return {
             form: {
-                first_name: '',
-                last_name: '',
-                email: '',
-                password: '',
-                password_confirmation: ''
-            },
-            form_errors: {
-                first_name: [],
-                last_name: [],
-                email: [],
-                password: []
+                init: {
+                    first_name: '',
+                    last_name: '',
+                    email: '',
+                    password: '',
+                    password_confirmation: ''
+                },
+                data: {},
+                errors: {
+                    first_name: [],
+                    last_name: [],
+                    email: [],
+                    password: []
+                }
             }
         }
     },
     created() {
-        this.FormHelper = FormHelpersServices;
+        this.FormHelper = new FormHelpersServices(this.form);
+        this.form = this.FormHelper.initialize_form_data();
     },
     methods: {
         submit(event) {
             var that = this;
 
-            AuthRequestsServices.register(this.form)
+            AuthRequestsServices.register(this.form.data)
                 .then(function(response) {
+                    this.form = that.FormHelper.initialize_form_data();
+                    this.form = that.FormHelper.initialize_form_errors();
+
                     if (response.status === 200) {
                         // Do execute login here.
                     }
                 })
                 .catch(function(error) {
-                    _.isEmpty(error.first_name) ? [] : that.form_errors.first_name = error.first_name;
-                    _.isEmpty(error.last_name) ? [] : that.form_errors.last_name = error.last_name;
-                    _.isEmpty(error.email) ? [] : that.form_errors.email = error.email;
-                    _.isEmpty(error.password) ? [] : that.form_errors.password = error.password;
+                    that.form = that.FormHelper.update_error_fields(error);
 
-                    that.password = '';
-                    that.password_confirmation = '';
+                    that.form.data.password = '';
+                    that.form.data.password_confirmation = '';
                 });
 
             event.preventDefault();

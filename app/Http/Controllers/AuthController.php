@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\User\RegisterRequest;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Repositories\Eloquent\UserRepository;
+use Auth;
 
 class AuthController extends Controller
 {
@@ -23,9 +25,13 @@ class AuthController extends Controller
      * 
      * @return [type]           [description]
      */
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-
+        $input = $request->input();
+        if (Auth::attempt(['email' => $input['email'], 'password' => $input['password']])) {
+            return response()->json(true);
+        }
+        return response()->json(false);
     }
 
     /**

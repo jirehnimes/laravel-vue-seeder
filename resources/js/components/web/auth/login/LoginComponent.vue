@@ -14,11 +14,17 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>Email address</label>
-                                    <input type="email" class="form-control" placeholder="Email Address" v-model="form_email_address">
+                                    <input type="text" class="form-control" 
+                                        :class="[FormHelper.is_invalid(form.errors.email)]"
+                                        placeholder="Email address" v-model="form.data.email">
+                                    <div class="invalid-feedback">{{ FormHelper.display_error(form.errors.email) }}</div>
                                 </div>
                                 <div class="form-group">
                                     <label>Password</label>
-                                    <input type="password" class="form-control" placeholder="Password" v-model="form_password">
+                                    <input type="password" class="form-control" 
+                                        :class="[FormHelper.is_invalid(form.errors.password)]"
+                                        placeholder="Password" v-model="form.data.password">
+                                    <div class="invalid-feedback">{{ FormHelper.display_error(form.errors.password) }}</div>
                                 </div>
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input">

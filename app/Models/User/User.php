@@ -19,6 +19,14 @@ class User extends Authenticatable
     const TABLE = 'users';
 
     /**
+     * Field validators.
+     */
+    const VALIDATE_FIRST_NAME = ['required', 'string', 'max:255'];
+    const VALIDATE_LAST_NAME = ['required', 'string', 'max:255'];
+    const VALIDATE_EMAIL = ['required', 'string', 'email', 'max:255'];
+    const VALIDATE_PASSWORD = ['required', 'string', 'min:8'];
+
+    /**
      * Defined database table name
      * @var string
      */

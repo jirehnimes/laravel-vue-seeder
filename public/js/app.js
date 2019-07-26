@@ -2765,18 +2765,43 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _services_requests_auth_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../services/requests/auth.js */ "./resources/js/services/requests/auth.js");
+/* harmony import */ var _services_helpers_form_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../services/helpers/form.js */ "./resources/js/services/helpers/form.js");
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      form_email_address: '',
-      form_password: ''
+      form: {
+        init: {
+          email: '',
+          password: ''
+        },
+        data: {},
+        errors: {
+          email: [],
+          password: []
+        }
+      }
     };
   },
-  mounted: function mounted() {},
+  created: function created() {
+    this.FormHelper = new _services_helpers_form_js__WEBPACK_IMPORTED_MODULE_1__["default"](this.form);
+    this.form = this.FormHelper.initialize_form_data();
+  },
   methods: {
     submit: function submit(event) {
-      console.log(this.form_email_address);
-      console.log(this.form_password);
+      var that = this;
+      _services_requests_auth_js__WEBPACK_IMPORTED_MODULE_0__["default"].login(this.form.data).then(function (response) {
+        that.form = that.FormHelper.initialize_form_data();
+        that.form = that.FormHelper.initialize_form_errors();
+
+        if (response.status === 200) {// Do execute login here.
+        }
+      })["catch"](function (error) {
+        that.form = that.FormHelper.update_error_fields(error);
+        that.form = that.FormHelper.initialize_form_data();
+      });
       event.preventDefault();
     }
   }
@@ -2801,36 +2826,40 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       form: {
-        first_name: '',
-        last_name: '',
-        email: '',
-        password: '',
-        password_confirmation: ''
-      },
-      form_errors: {
-        first_name: [],
-        last_name: [],
-        email: [],
-        password: []
+        init: {
+          first_name: '',
+          last_name: '',
+          email: '',
+          password: '',
+          password_confirmation: ''
+        },
+        data: {},
+        errors: {
+          first_name: [],
+          last_name: [],
+          email: [],
+          password: []
+        }
       }
     };
   },
   created: function created() {
-    this.FormHelper = _services_helpers_form_js__WEBPACK_IMPORTED_MODULE_1__["default"];
+    this.FormHelper = new _services_helpers_form_js__WEBPACK_IMPORTED_MODULE_1__["default"](this.form);
+    this.form = this.FormHelper.initialize_form_data();
   },
   methods: {
     submit: function submit(event) {
       var that = this;
-      _services_requests_auth_js__WEBPACK_IMPORTED_MODULE_0__["default"].register(this.form).then(function (response) {
+      _services_requests_auth_js__WEBPACK_IMPORTED_MODULE_0__["default"].register(this.form.data).then(function (response) {
+        this.form = that.FormHelper.initialize_form_data();
+        this.form = that.FormHelper.initialize_form_errors();
+
         if (response.status === 200) {// Do execute login here.
         }
       })["catch"](function (error) {
-        _.isEmpty(error.first_name) ? [] : that.form_errors.first_name = error.first_name;
-        _.isEmpty(error.last_name) ? [] : that.form_errors.last_name = error.last_name;
-        _.isEmpty(error.email) ? [] : that.form_errors.email = error.email;
-        _.isEmpty(error.password) ? [] : that.form_errors.password = error.password;
-        that.password = '';
-        that.password_confirmation = '';
+        that.form = that.FormHelper.update_error_fields(error);
+        that.form.data.password = '';
+        that.form.data.password_confirmation = '';
       });
       event.preventDefault();
     }
@@ -40605,22 +40634,31 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.form_email_address,
-                        expression: "form_email_address"
+                        value: _vm.form.data.email,
+                        expression: "form.data.email"
                       }
                     ],
                     staticClass: "form-control",
-                    attrs: { type: "email", placeholder: "Email Address" },
-                    domProps: { value: _vm.form_email_address },
+                    class: [_vm.FormHelper.is_invalid(_vm.form.errors.email)],
+                    attrs: { type: "text", placeholder: "Email address" },
+                    domProps: { value: _vm.form.data.email },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.form_email_address = $event.target.value
+                        _vm.$set(_vm.form.data, "email", $event.target.value)
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "invalid-feedback" }, [
+                    _vm._v(
+                      _vm._s(
+                        _vm.FormHelper.display_error(_vm.form.errors.email)
+                      )
+                    )
+                  ])
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
@@ -40631,22 +40669,33 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.form_password,
-                        expression: "form_password"
+                        value: _vm.form.data.password,
+                        expression: "form.data.password"
                       }
                     ],
                     staticClass: "form-control",
+                    class: [
+                      _vm.FormHelper.is_invalid(_vm.form.errors.password)
+                    ],
                     attrs: { type: "password", placeholder: "Password" },
-                    domProps: { value: _vm.form_password },
+                    domProps: { value: _vm.form.data.password },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.form_password = $event.target.value
+                        _vm.$set(_vm.form.data, "password", $event.target.value)
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "invalid-feedback" }, [
+                    _vm._v(
+                      _vm._s(
+                        _vm.FormHelper.display_error(_vm.form.errors.password)
+                      )
+                    )
+                  ])
                 ]),
                 _vm._v(" "),
                 _vm._m(1)
@@ -40752,28 +40801,36 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.form.first_name,
-                        expression: "form.first_name"
+                        value: _vm.form.data.first_name,
+                        expression: "form.data.first_name"
                       }
                     ],
                     staticClass: "form-control",
                     class: [
-                      _vm.FormHelper.is_invalid(_vm.form_errors.first_name)
+                      _vm.FormHelper.is_invalid(_vm.form.errors.first_name)
                     ],
                     attrs: { type: "text", placeholder: "First name" },
-                    domProps: { value: _vm.form.first_name },
+                    domProps: { value: _vm.form.data.first_name },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.form, "first_name", $event.target.value)
+                        _vm.$set(
+                          _vm.form.data,
+                          "first_name",
+                          $event.target.value
+                        )
                       }
                     }
                   }),
                   _vm._v(" "),
                   _c("div", { staticClass: "invalid-feedback" }, [
-                    _vm._v(_vm._s(_vm.form_errors.first_name[0]))
+                    _vm._v(
+                      _vm._s(
+                        _vm.FormHelper.display_error(_vm.form.errors.first_name)
+                      )
+                    )
                   ])
                 ]),
                 _vm._v(" "),
@@ -40785,28 +40842,36 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.form.last_name,
-                        expression: "form.last_name"
+                        value: _vm.form.data.last_name,
+                        expression: "form.data.last_name"
                       }
                     ],
                     staticClass: "form-control",
                     class: [
-                      _vm.FormHelper.is_invalid(_vm.form_errors.last_name)
+                      _vm.FormHelper.is_invalid(_vm.form.errors.last_name)
                     ],
                     attrs: { type: "text", placeholder: "Last name" },
-                    domProps: { value: _vm.form.last_name },
+                    domProps: { value: _vm.form.data.last_name },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.form, "last_name", $event.target.value)
+                        _vm.$set(
+                          _vm.form.data,
+                          "last_name",
+                          $event.target.value
+                        )
                       }
                     }
                   }),
                   _vm._v(" "),
                   _c("div", { staticClass: "invalid-feedback" }, [
-                    _vm._v(_vm._s(_vm.form_errors.last_name[0]))
+                    _vm._v(
+                      _vm._s(
+                        _vm.FormHelper.display_error(_vm.form.errors.last_name)
+                      )
+                    )
                   ])
                 ]),
                 _vm._v(" "),
@@ -40818,26 +40883,30 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.form.email,
-                        expression: "form.email"
+                        value: _vm.form.data.email,
+                        expression: "form.data.email"
                       }
                     ],
                     staticClass: "form-control",
-                    class: [_vm.FormHelper.is_invalid(_vm.form_errors.email)],
+                    class: [_vm.FormHelper.is_invalid(_vm.form.errors.email)],
                     attrs: { type: "email", placeholder: "Email Address" },
-                    domProps: { value: _vm.form.email },
+                    domProps: { value: _vm.form.data.email },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.form, "email", $event.target.value)
+                        _vm.$set(_vm.form.data, "email", $event.target.value)
                       }
                     }
                   }),
                   _vm._v(" "),
                   _c("div", { staticClass: "invalid-feedback" }, [
-                    _vm._v(_vm._s(_vm.form_errors.email[0]))
+                    _vm._v(
+                      _vm._s(
+                        _vm.FormHelper.display_error(_vm.form.errors.email)
+                      )
+                    )
                   ])
                 ]),
                 _vm._v(" "),
@@ -40849,28 +40918,32 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.form.password,
-                        expression: "form.password"
+                        value: _vm.form.data.password,
+                        expression: "form.data.password"
                       }
                     ],
                     staticClass: "form-control",
                     class: [
-                      _vm.FormHelper.is_invalid(_vm.form_errors.password)
+                      _vm.FormHelper.is_invalid(_vm.form.errors.password)
                     ],
                     attrs: { type: "password", placeholder: "Password" },
-                    domProps: { value: _vm.form.password },
+                    domProps: { value: _vm.form.data.password },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.form, "password", $event.target.value)
+                        _vm.$set(_vm.form.data, "password", $event.target.value)
                       }
                     }
                   }),
                   _vm._v(" "),
                   _c("div", { staticClass: "invalid-feedback" }, [
-                    _vm._v(_vm._s(_vm.form_errors.password[0]))
+                    _vm._v(
+                      _vm._s(
+                        _vm.FormHelper.display_error(_vm.form.errors.password)
+                      )
+                    )
                   ])
                 ]),
                 _vm._v(" "),
@@ -40882,20 +40955,20 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.form.password_confirmation,
-                        expression: "form.password_confirmation"
+                        value: _vm.form.data.password_confirmation,
+                        expression: "form.data.password_confirmation"
                       }
                     ],
                     staticClass: "form-control",
                     attrs: { type: "password", placeholder: "Password" },
-                    domProps: { value: _vm.form.password_confirmation },
+                    domProps: { value: _vm.form.data.password_confirmation },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
                         _vm.$set(
-                          _vm.form,
+                          _vm.form.data,
                           "password_confirmation",
                           $event.target.value
                         )
@@ -57166,14 +57239,68 @@ var routes = [// WEB PAGES
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var FormHelpersServices = {
-  is_invalid: function is_invalid(errors) {
-    return {
-      'is-invalid': !_.isEmpty(errors)
-    };
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return FormHelpersServices; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var FormHelpersServices =
+/*#__PURE__*/
+function () {
+  function FormHelpersServices(form) {
+    _classCallCheck(this, FormHelpersServices);
+
+    this.form = form;
   }
-};
-/* harmony default export */ __webpack_exports__["default"] = (FormHelpersServices);
+
+  _createClass(FormHelpersServices, [{
+    key: "initialize_form_data",
+    value: function initialize_form_data() {
+      this.form.data = _.cloneDeep(this.form.init);
+      return this.form;
+    }
+  }, {
+    key: "initialize_form_errors",
+    value: function initialize_form_errors() {
+      for (var field in this.form.errors) {
+        this.form.errors[field] = [];
+      }
+
+      return this.form;
+    }
+  }, {
+    key: "is_invalid",
+    value: function is_invalid(errors) {
+      return {
+        'is-invalid': !_.isEmpty(errors)
+      };
+    }
+  }, {
+    key: "update_error_fields",
+    value: function update_error_fields(error_data) {
+      for (var field in this.form.errors) {
+        this.form.errors[field] = _.isEmpty(error_data[field]) ? [] : error_data[field];
+      }
+
+      return this.form;
+    }
+  }, {
+    key: "display_error",
+    value: function display_error(error_field) {
+      if (error_field.length > 0) {
+        return error_field[0];
+      }
+
+      return false;
+    }
+  }]);
+
+  return FormHelpersServices;
+}();
+
+
 
 /***/ }),
 
@@ -57186,13 +57313,17 @@ var FormHelpersServices = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var API_URL = '/api/user';
+var ROOT_API = '/api/auth';
 var AuthRequestsServices = {
   login: function login(form) {
-    return axios.post(API_URL, form);
+    return axios.post(ROOT_API + '/login', form).then(function (response) {
+      return response;
+    })["catch"](function (error) {
+      throw error.response.data.errors;
+    });
   },
   register: function register(form) {
-    return axios.post(API_URL, form).then(function (response) {
+    return axios.post(ROOT_API + '/register', form).then(function (response) {
       return response;
     })["catch"](function (error) {
       throw error.response.data.errors;
