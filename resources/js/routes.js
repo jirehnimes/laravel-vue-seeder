@@ -3,10 +3,11 @@ import _404Component from './components/404Component.vue';
 // WEB
 
 import WebComponent from './components/web/WebComponent.vue';
-import WebIndexComponent from './components/web/index/IndexComponent.vue';
 import WebAuthLoginComponent from './components/web/auth/login/LoginComponent.vue';
 import WebAuthRegisterComponent from './components/web/auth/register/RegisterComponent.vue';
 import WebAuthForgotPasswordComponent from './components/web/auth/forgotPassword/ForgotPasswordComponent.vue';
+import WebIndexComponent from './components/web/index/IndexComponent.vue';
+import WebProfileComponent from './components/web/profile/ProfileComponent.vue';
 
 // ADMIN
 
@@ -39,6 +40,14 @@ const routes = [
                 name: 'ForgotPassword',
                 path: 'forgot_password',
                 component: WebAuthForgotPasswordComponent        
+            },
+            {
+                name: 'Profile',
+                path: 'profile',
+                component: WebProfileComponent,
+                meta: { 
+                    requiresAuth: true
+                }
             }
         ]
     },

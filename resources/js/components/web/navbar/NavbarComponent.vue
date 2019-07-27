@@ -13,28 +13,22 @@
                         <router-link class="nav-link" to="/">Home <span class="sr-only">(current)</span></router-link>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Dropdown
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#">Disabled</a>
+                        <router-link class="nav-link" to="/profile">Profile</router-link>
                     </li>
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <router-link to="/login" class="btn btn-outline-success">Login</router-link>
-                    <router-link to="/register" class="btn btn-outline-success">Register</router-link>
-                </form>
+
+                <div class="form-inline my-2 my-lg-0">
+                    <span v-if="!isLoggedIn">
+                        <router-link to="/login" class="btn btn-outline-success">Login</router-link>
+                        <router-link to="/register" class="btn btn-outline-success">Register</router-link>
+                    </span>
+                    <span v-if="isLoggedIn">
+                        <button class="btn btn-outline-success" v-on:click="logout">Logout</button>
+                    </span>
+                </div>
             </div>
         </nav>
     </div>
 </template>
+
+<script src="./navbar.js"></script>
