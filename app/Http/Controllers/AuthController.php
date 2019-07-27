@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Repositories\Eloquent\UserRepository;
+use App\Models\User\User;
+use App\Models\Token;
 use Auth;
 
 class AuthController extends Controller
@@ -29,7 +31,10 @@ class AuthController extends Controller
     {
         $input = $request->input();
         if (Auth::attempt(['email' => $input['email'], 'password' => $input['password']])) {
-            return response()->json(true);
+            $user = User::where(['email' => $input['email']])->first();
+            $user['token'] = $user->createToken(Token::createTokenName($user['email']))->accessToken;
+
+            return response()->json($user);
         }
         return response()->json(false);
     }
@@ -44,8 +49,9 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
         $input = $request->input();
-        $result = $this->userRepository->create($input);
-        return response()->json($result);
+        $user = $this->userRepository->create($input);
+        $user['token'] = $user->createToken(Token::createTokenName($user['email']))->accessToken;
+        return response()->json($user);
     }
 
     /**

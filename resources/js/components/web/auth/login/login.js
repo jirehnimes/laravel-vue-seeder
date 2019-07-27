@@ -1,5 +1,6 @@
-import AuthRequestsServices from '../../../../services/requests/auth.js';
-import FormHelpersServices from '../../../../services/helpers/form.js';
+import AuthRequestsServices from '../../../../services/requests/auth.js'
+import AuthHelpersServices from '../../../../services/helpers/auth.js'
+import FormHelpersServices from '../../../../services/helpers/form.js'
 
 export default {
     data() {
@@ -18,28 +19,24 @@ export default {
         }
     },
     created() {
-        this.FormHelper = new FormHelpersServices(this.form);
-        this.form = this.FormHelper.initialize_form_data();
+        this.FormHelper = new FormHelpersServices(this.form)
+        this.form = this.FormHelper.initialize_form_data()
     },
     methods: {
         submit(event) {
-            var that = this;
+            var that = this
 
-            AuthRequestsServices.login(this.form.data)
-                .then(function(response) {
-                    that.form = that.FormHelper.initialize_form_data();
-                    that.form = that.FormHelper.initialize_form_errors();
-
-                    if (response.status === 200) {
-                        // Do execute login here.
-                    }
+            AuthHelpersServices.authenticate(that, this.form.data)
+                .then(response => {
+                    that.form = that.FormHelper.initialize_form_data()
+                    that.form = that.FormHelper.initialize_form_errors()
                 })
-                .catch(function(error) {
-                    that.form = that.FormHelper.update_error_fields(error);
-                    that.form = that.FormHelper.initialize_form_data();
-                });
+                .catch(error => {
+                    that.form = that.FormHelper.update_error_fields(error)
+                    that.form = that.FormHelper.initialize_form_data()
+                })
 
-            event.preventDefault();
+            event.preventDefault()
         }
     }
 }

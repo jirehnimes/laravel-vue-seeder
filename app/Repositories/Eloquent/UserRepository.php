@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Models\Token;
 use App\Repositories\Eloquent\Repository;
 
 class UserRepository extends Repository
