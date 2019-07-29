@@ -31,10 +31,6 @@
 </template>
 
 <style type="text/css">
-    body {
-        background-color: #000 !important;
-    }
-
     .box {
         margin-top: 50px;
     }

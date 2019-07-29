@@ -13,6 +13,8 @@ import WebProfileComponent from './components/web/profile/ProfileComponent.vue';
 
 import AdminAuthLoginComponent from './components/admin/auth/login/LoginComponent.vue';
 import AdminAuthRegisterComponent from './components/admin/auth/register/RegisterComponent.vue';
+import AdminHomeComponent from './components/admin/home/HomeComponent.vue';
+import AdminIndexComponent from './components/admin/index/IndexComponent.vue';
 
 const routes = [
     // WEB PAGES
@@ -60,6 +62,11 @@ const routes = [
         },
         children: [
             {
+                name: 'AdminIndex',
+                path: '',
+                component: AdminIndexComponent
+            },
+            {
                 name: 'AdminLogin',
                 path: 'login',
                 component: AdminAuthLoginComponent
@@ -68,6 +75,11 @@ const routes = [
                 name: 'AdminRegister',
                 path: 'register',
                 component: AdminAuthRegisterComponent
+            },
+            {
+                name: 'AdminHome',
+                path: 'home',
+                component: AdminHomeComponent
             }
         ]
     },
