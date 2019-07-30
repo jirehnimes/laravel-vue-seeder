@@ -4,6 +4,9 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 
+const tokenName = 'token';
+const adminTokenName = 'adminToken';
+
 // https://scotch.io/tutorials/handling-authentication-in-vue-using-vuex
 export const store = new Vuex.Store({
     state: {

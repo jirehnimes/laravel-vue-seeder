@@ -34,7 +34,8 @@ class RegisterRequest extends FormRequest
             'first_name' => User::VALIDATE_FIRST_NAME,
             'last_name'  => User::VALIDATE_LAST_NAME,
             'email'      => $email,
-            'password'   => $password
+            'password'   => $password,
+            'user_level' => 'unique:users'
         ];
     }
 }

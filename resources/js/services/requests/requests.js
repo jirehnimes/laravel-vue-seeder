@@ -1,1 +1,1 @@
-export let ROOT_API = '/api';
+export const ROOT_API = '/api';

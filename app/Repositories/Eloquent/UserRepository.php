@@ -26,13 +26,17 @@ class UserRepository extends Repository
      */
     public function create(array $data) 
     {
-        return $this->model->create(
-            [
-                'first_name' => $data['first_name'],
-                'last_name'  => $data['last_name'],
-                'email'      => $data['email'],
-                'password'   => \Hash::make($data['password'])
-            ]
-        );
+        $form = [
+            'first_name' => $data['first_name'],
+            'last_name'  => $data['last_name'],
+            'email'      => $data['email'],
+            'password'   => \Hash::make($data['password'])
+        ];
+
+        if (isset($data['user_level'])) {
+            $form['user_level'] = $data['user_level'];
+        }
+
+        return $this->model->create($form);
     }
 }

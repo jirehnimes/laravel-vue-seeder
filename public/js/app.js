@@ -2086,6 +2086,69 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./resources/js/components/admin/auth/register/register.js?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./resources/js/components/admin/auth/register/register.js?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _services_requests_auth_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../services/requests/auth.js */ "./resources/js/services/requests/auth.js");
+/* harmony import */ var _services_helpers_auth_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../services/helpers/auth.js */ "./resources/js/services/helpers/auth.js");
+/* harmony import */ var _services_helpers_form_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../services/helpers/form.js */ "./resources/js/services/helpers/form.js");
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      form: {
+        init: {
+          first_name: '',
+          last_name: '',
+          email: '',
+          password: '',
+          password_confirmation: ''
+        },
+        data: {},
+        errors: {
+          first_name: [],
+          last_name: [],
+          email: [],
+          password: []
+        }
+      }
+    };
+  },
+  created: function created() {
+    this.FormHelper = new _services_helpers_form_js__WEBPACK_IMPORTED_MODULE_2__["default"](this.form);
+    this.form = this.FormHelper.initialize_form_data();
+  },
+  methods: {
+    submit: function submit(event) {
+      var that = this;
+      _services_requests_auth_js__WEBPACK_IMPORTED_MODULE_0__["default"].register(this.form.data).then(function (response) {
+        response.data['password'] = that.form.data.password;
+        that.form = that.FormHelper.initialize_form_data();
+        that.form = that.FormHelper.initialize_form_errors();
+
+        if (response.status === 200) {
+          _services_helpers_auth_js__WEBPACK_IMPORTED_MODULE_1__["default"].authenticate(that, response.data);
+        }
+      })["catch"](function (error) {
+        that.form = that.FormHelper.update_error_fields(error);
+        that.form.data.password = '';
+        that.form.data.password_confirmation = '';
+      });
+      event.preventDefault();
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./resources/js/components/web/auth/forgotPassword/forgotPassword.js?vue&type=script&lang=js&":
 /*!**********************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./resources/js/components/web/auth/forgotPassword/forgotPassword.js?vue&type=script&lang=js& ***!
@@ -6732,7 +6795,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../../node_module
 
 
 // module
-exports.push([module.i, "\n.box {\n    margin-top: 50px;\n}\n", ""]);
+exports.push([module.i, "\n.card {\n    margin-top: 50px;\n}\n", ""]);
 
 // exports
 
@@ -38630,14 +38693,226 @@ var render = function() {
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-md-8" }, [
-        _c("div", { staticClass: "box box-success" }, [
-          _c("div", { staticClass: "box-header with-border" }, [
-            _c("h3", { staticClass: "box-title" }, [
-              _vm._v(_vm._s(_vm.app_name))
-            ])
-          ]),
+        _c("div", { staticClass: "card card-primary" }, [
+          _vm._m(0),
           _vm._v(" "),
-          _vm._m(0)
+          _c("div", { staticClass: "card-body" }, [
+            _c("h3", [_vm._v("Register")]),
+            _vm._v(" "),
+            _c("form", { attrs: { role: "form" } }, [
+              _c("div", { staticClass: "card-body" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", [_vm._v("First name")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.data.first_name,
+                        expression: "form.data.first_name"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    class: [
+                      _vm.FormHelper.is_invalid(_vm.form.errors.first_name)
+                    ],
+                    attrs: { type: "text", placeholder: "First name" },
+                    domProps: { value: _vm.form.data.first_name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.form.data,
+                          "first_name",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "invalid-feedback" }, [
+                    _vm._v(
+                      _vm._s(
+                        _vm.FormHelper.display_error(_vm.form.errors.first_name)
+                      )
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", [_vm._v("Last name")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.data.last_name,
+                        expression: "form.data.last_name"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    class: [
+                      _vm.FormHelper.is_invalid(_vm.form.errors.last_name)
+                    ],
+                    attrs: { type: "text", placeholder: "Last name" },
+                    domProps: { value: _vm.form.data.last_name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.form.data,
+                          "last_name",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "invalid-feedback" }, [
+                    _vm._v(
+                      _vm._s(
+                        _vm.FormHelper.display_error(_vm.form.errors.last_name)
+                      )
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", [_vm._v("Email address")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.data.email,
+                        expression: "form.data.email"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    class: [_vm.FormHelper.is_invalid(_vm.form.errors.email)],
+                    attrs: { type: "email", placeholder: "Email Address" },
+                    domProps: { value: _vm.form.data.email },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.form.data, "email", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "invalid-feedback" }, [
+                    _vm._v(
+                      _vm._s(
+                        _vm.FormHelper.display_error(_vm.form.errors.email)
+                      )
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", [_vm._v("Password")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.data.password,
+                        expression: "form.data.password"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    class: [
+                      _vm.FormHelper.is_invalid(_vm.form.errors.password)
+                    ],
+                    attrs: { type: "password", placeholder: "Password" },
+                    domProps: { value: _vm.form.data.password },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.form.data, "password", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "invalid-feedback" }, [
+                    _vm._v(
+                      _vm._s(
+                        _vm.FormHelper.display_error(_vm.form.errors.password)
+                      )
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", [_vm._v("Confirm Password")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.data.password_confirmation,
+                        expression: "form.data.password_confirmation"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "password", placeholder: "Password" },
+                    domProps: { value: _vm.form.data.password_confirmation },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.form.data,
+                          "password_confirmation",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "card-footer" },
+                [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "submit" },
+                      on: { click: _vm.submit }
+                    },
+                    [_vm._v("Register")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "router-link",
+                    {
+                      staticClass: "btn btn-outline-success",
+                      attrs: { to: "/admin/login" }
+                    },
+                    [_vm._v("Login")]
+                  )
+                ],
+                1
+              )
+            ])
+          ])
         ])
       ])
     ])
@@ -38648,56 +38923,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "box-body" }, [
-      _c("form", { attrs: { role: "form" } }, [
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "exampleInputEmail1" } }, [
-              _vm._v("Email address")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control",
-              attrs: {
-                type: "email",
-                id: "exampleInputEmail1",
-                placeholder: "Enter email"
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "exampleInputPassword1" } }, [
-              _vm._v("Password")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control",
-              attrs: {
-                type: "password",
-                id: "exampleInputPassword1",
-                placeholder: "Password"
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-check" }, [
-            _c("input", {
-              staticClass: "form-check-input",
-              attrs: { type: "checkbox", id: "exampleCheck1" }
-            }),
-            _vm._v(" "),
-            _c(
-              "label",
-              {
-                staticClass: "form-check-label",
-                attrs: { for: "exampleCheck1" }
-              },
-              [_vm._v("Remember me")]
-            )
-          ])
-        ])
-      ])
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("APP NAME")])
     ])
   }
 ]
@@ -39321,7 +39548,7 @@ var staticRenderFns = [
                                       },
                                       [
                                         _c("i", {
-                                          staticClass: "far fa-circle nav-icon"
+                                          staticClass: "fas fa-circle nav-icon"
                                         }),
                                         _vm._v(" "),
                                         _c("p", [_vm._v("Dashboard v1")])
@@ -39338,7 +39565,7 @@ var staticRenderFns = [
                                       },
                                       [
                                         _c("i", {
-                                          staticClass: "far fa-circle nav-icon"
+                                          staticClass: "fas fa-circle nav-icon"
                                         }),
                                         _vm._v(" "),
                                         _c("p", [_vm._v("Dashboard v2")])
@@ -39355,7 +39582,7 @@ var staticRenderFns = [
                                       },
                                       [
                                         _c("i", {
-                                          staticClass: "far fa-circle nav-icon"
+                                          staticClass: "fas fa-circle nav-icon"
                                         }),
                                         _vm._v(" "),
                                         _c("p", [_vm._v("Dashboard v3")])
@@ -39435,7 +39662,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Top Navigation")])
@@ -39452,7 +39679,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Boxed")])
@@ -39471,7 +39698,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Fixed Sidebar")])
@@ -39490,7 +39717,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Fixed Navbar")])
@@ -39509,7 +39736,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Fixed Footer")])
@@ -39529,7 +39756,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Collapsed Sidebar")])
@@ -39574,7 +39801,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("ChartJS")])
@@ -39591,7 +39818,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Flot")])
@@ -39610,7 +39837,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Inline")])
@@ -39653,7 +39880,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("General")])
@@ -39670,7 +39897,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Icons")])
@@ -39687,7 +39914,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Buttons")])
@@ -39704,7 +39931,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Sliders")])
@@ -39721,7 +39948,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Modals & Alerts")])
@@ -39738,7 +39965,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Navbar & Tabs")])
@@ -39783,7 +40010,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("General Elements")])
@@ -39802,7 +40029,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Advanced Elements")])
@@ -39821,7 +40048,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Editors")])
@@ -39866,7 +40093,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Simple Tables")])
@@ -39883,7 +40110,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("DataTables")])
@@ -39902,7 +40129,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("jsGrid")])
@@ -39925,7 +40152,7 @@ var staticRenderFns = [
                                 },
                                 [
                                   _c("i", {
-                                    staticClass: "nav-icon far fa-calendar-alt"
+                                    staticClass: "nav-icon fas fa-calendar-alt"
                                   }),
                                   _vm._v(" "),
                                   _c("p", [
@@ -39951,7 +40178,7 @@ var staticRenderFns = [
                                 },
                                 [
                                   _c("i", {
-                                    staticClass: "nav-icon far fa-envelope"
+                                    staticClass: "nav-icon fas fa-envelope"
                                   }),
                                   _vm._v(" "),
                                   _c("p", [
@@ -39977,7 +40204,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Inbox")])
@@ -39996,7 +40223,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Compose")])
@@ -40015,7 +40242,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Read")])
@@ -40060,7 +40287,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Invoice")])
@@ -40079,7 +40306,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Profile")])
@@ -40098,7 +40325,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("E-commerce")])
@@ -40117,7 +40344,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Projects")])
@@ -40136,7 +40363,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Project Add")])
@@ -40155,7 +40382,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Project Edit")])
@@ -40175,7 +40402,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Project Detail")])
@@ -40194,7 +40421,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Contacts")])
@@ -40213,7 +40440,7 @@ var staticRenderFns = [
                                 },
                                 [
                                   _c("i", {
-                                    staticClass: "nav-icon far fa-plus-square"
+                                    staticClass: "nav-icon fas fa-plus-square"
                                   }),
                                   _vm._v(" "),
                                   _c("p", [
@@ -40239,7 +40466,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Login")])
@@ -40258,7 +40485,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Register")])
@@ -40277,7 +40504,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Lockscreen")])
@@ -40297,7 +40524,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Legacy User Menu")])
@@ -40317,7 +40544,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Language Menu")])
@@ -40334,7 +40561,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Error 404")])
@@ -40351,7 +40578,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Error 500")])
@@ -40370,7 +40597,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Blank Page")])
@@ -40387,7 +40614,7 @@ var staticRenderFns = [
                                     },
                                     [
                                       _c("i", {
-                                        staticClass: "far fa-circle nav-icon"
+                                        staticClass: "fas fa-circle nav-icon"
                                       }),
                                       _vm._v(" "),
                                       _c("p", [_vm._v("Starter Page")])
@@ -40434,7 +40661,7 @@ var staticRenderFns = [
                                 [
                                   _c("i", {
                                     staticClass:
-                                      "nav-icon far fa-circle text-danger"
+                                      "nav-icon fas fa-circle text-danger"
                                   }),
                                   _vm._v(" "),
                                   _c("p", { staticClass: "text" }, [
@@ -40454,7 +40681,7 @@ var staticRenderFns = [
                                 [
                                   _c("i", {
                                     staticClass:
-                                      "nav-icon far fa-circle text-warning"
+                                      "nav-icon fas fa-circle text-warning"
                                   }),
                                   _vm._v(" "),
                                   _c("p", [_vm._v("Warning")])
@@ -40472,7 +40699,7 @@ var staticRenderFns = [
                                 [
                                   _c("i", {
                                     staticClass:
-                                      "nav-icon far fa-circle text-info"
+                                      "nav-icon fas fa-circle text-info"
                                   }),
                                   _vm._v(" "),
                                   _c("p", [_vm._v("Informational")])
@@ -57510,23 +57737,26 @@ __webpack_require__.r(__webpack_exports__);
 /*!***************************************************************************!*\
   !*** ./resources/js/components/admin/auth/register/RegisterComponent.vue ***!
   \***************************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _RegisterComponent_vue_vue_type_template_id_8a9ff54c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RegisterComponent.vue?vue&type=template&id=8a9ff54c& */ "./resources/js/components/admin/auth/register/RegisterComponent.vue?vue&type=template&id=8a9ff54c&");
-/* harmony import */ var _RegisterComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RegisterComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/admin/auth/register/RegisterComponent.vue?vue&type=style&index=0&lang=css&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _register_js_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./register.js?vue&type=script&lang=js& */ "./resources/js/components/admin/auth/register/register.js?vue&type=script&lang=js&");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _register_js_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _register_js_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _RegisterComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./RegisterComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/admin/auth/register/RegisterComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
-var script = {}
+
+
 
 
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  script,
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _register_js_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _RegisterComponent_vue_vue_type_template_id_8a9ff54c___WEBPACK_IMPORTED_MODULE_0__["render"],
   _RegisterComponent_vue_vue_type_template_id_8a9ff54c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
@@ -57574,6 +57804,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterComponent_vue_vue_type_template_id_8a9ff54c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/auth/register/register.js?vue&type=script&lang=js&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/admin/auth/register/register.js?vue&type=script&lang=js& ***!
+  \******************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_register_js_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib??ref--4-0!./register.js?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./resources/js/components/admin/auth/register/register.js?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_register_js_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -58647,7 +58891,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]); // https://scotch.io/tutorials/handling-authentication-in-vue-using-vuex
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
+var tokenName = 'token';
+var adminTokenName = 'adminToken'; // https://scotch.io/tutorials/handling-authentication-in-vue-using-vuex
 
 var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {

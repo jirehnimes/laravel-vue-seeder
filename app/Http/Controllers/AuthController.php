@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\BusinessLogics\AuthenticateBL;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
-use App\Repositories\Eloquent\UserRepository;
+use App\Models\User\Admin;
 use App\Models\User\User;
-use App\Models\Token;
 use Auth;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -17,7 +17,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->userRepository = new UserRepository();
+        $this->authenticateBL = new AuthenticateBL();
     }
 
     /**
@@ -48,9 +48,8 @@ class AuthController extends Controller
      */
     public function register(RegisterRequest $request)
     {
-        $input = $request->input();
-        $user = $this->userRepository->create($input);
-        $user['token'] = $user->createToken(Token::createTokenName($user['email']))->accessToken;
+        $user = $this->authenticateBL->register($request->input());
+
         return response()->json($user);
     }
 
@@ -64,5 +63,19 @@ class AuthController extends Controller
     public function forgotPassword(Request $request)
     {
 
+    }
+
+    /**
+     * User registration.
+     * 
+     * @param  RegisterRequest $request [description]
+     * 
+     * @return [type]                   [description]
+     */
+    public function adminRegister(RegisterRequest $request)
+    {
+        $user = $this->authenticateBL->register($request->input(), 99);
+
+        return response()->json($user);
     }
 }
