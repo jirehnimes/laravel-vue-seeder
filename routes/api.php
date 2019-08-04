@@ -26,8 +26,11 @@ Route::middleware(['auth:api'])->group(
 
 // ADMIN
 
-Route::prefix('admin')->middleware(['authorize.admin'])->group(function () {
-    Route::post('auth/register', 'AuthController@adminRegister');
-});
+Route::prefix('admin')->middleware(['authorize.admin'])->group(
+    function () {
+        Route::post('auth/login', 'AuthController@adminLogin');
+        Route::post('auth/register', 'AuthController@adminRegister');
+    }
+);
 
 

@@ -8,7 +8,7 @@
 <script type="text/javascript">
     export default {
         computed : {
-            isLoggedIn : function() { return this.$store.getters.isLoggedIn }
+            isLoggedIn : function() { return this.$store.getters.isLoggedIn('web') }
         }
     }
 </script>

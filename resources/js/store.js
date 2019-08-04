@@ -2,62 +2,93 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 
-Vue.use(Vuex);
+import Admin from './models/admin.js'
+import User from './models/user.js'
 
-const tokenName = 'token';
-const adminTokenName = 'adminToken';
+Vue.use(Vuex)
+
+const tokenName = 'token'
+const adminTokenName = 'admin-token'
+
+function getKeyByLevel(userLevel) {
+    if (userLevel === Admin.LEVEL) {
+        return 'admin'
+    } else {
+        return 'web'
+    }
+}
 
 // https://scotch.io/tutorials/handling-authentication-in-vue-using-vuex
 export const store = new Vuex.Store({
     state: {
-        status: '',
-        token: localStorage.getItem('token') || '',
-        user : {}
+        web: {
+            status: '',
+            token: localStorage.getItem(tokenName) || '',
+            user : {}
+        },
+        admin: {
+            status: '',
+            token: localStorage.getItem(adminTokenName) || '',
+            user : {}
+        }
     },
     mutations: {
-        auth_request(state) {
-            state.status = 'loading'
+        auth_request(state, userLevel) {
+            state[getKeyByLevel(userLevel)].status = 'loading'
         },
-        auth_success(state, token, user) {
-            state.status = 'success'
-            state.token = token
-            state.user = user
+        auth_success(state, token, user, userLevel) {
+            let keyLevel = getKeyByLevel(userLevel)
+
+            state[keyLevel].status = 'success'
+            state[keyLevel].token = token
+            state[keyLevel].user = user
         },
-        auth_error(state) {
-            state.status = 'error'
+        auth_error(state, userLevel) {
+            state[getKeyByLevel(userLevel)].status = 'error'
         },
-        logout(state) {
-            state.status = ''
-            state.token = ''
+        logout(state, userLevel) {
+            state[getKeyByLevel(userLevel)].status = ''
+            state[getKeyByLevel(userLevel)].token = ''
         }
     },
     actions: {
-        login({commit}, responseData) {
+        login({commit}, params) {
             return new Promise((resolve, reject) => {
-                commit('auth_request')
+                commit('auth_request', params.userLevel)
 
-                const token = responseData.token;
-                const user = responseData;
+                const token = params.responseData.token
+                const user = params.responseData
 
-                localStorage.setItem('token', token);
-                axios.defaults.headers.common['Authorization'] = token;
+                if (params.userLevel === Admin.LEVEL) {
+                    localStorage.setItem(adminTokenName, token)
+                } else {
+                    localStorage.setItem(tokenName, token)
+                }
 
-                commit('auth_success', token, user)
+                // axios.defaults.headers.common['Authorization'] = token;
+
+                commit('auth_success', token, user, params.userLevel)
 
                 resolve(true)
             })
         },
-        logout({commit}) {
+        logout({commit}, params) {
             return new Promise((resolve, reject) => {
-                commit('logout')
-                localStorage.removeItem('token')
-                delete axios.defaults.headers.common['Authorization']
+                commit('logout', params.userLevel)
+
+                if (params.userLevel === Admin.LEVEL) {
+                    localStorage.removeItem(adminTokenName)
+                } else {
+                    localStorage.removeItem(tokenName)
+                }
+
+                // delete axios.defaults.headers.common['Authorization']
                 resolve()
             })
         }
     },
     getters : {
-        isLoggedIn: state => !!state.token,
-        authStatus: state => state.status,
+        isLoggedIn: state => userLevel => !!state[userLevel].token,
+        authStatus: state => userLevel => state[userLevel].status
     }
 })

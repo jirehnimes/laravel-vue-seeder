@@ -29568,3 +29568,9 @@ div.container-fluid {
   padding: 0;
 }
 
+.admin .main-sidebar ::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+  /* make scrollbar transparent */
+}
+

@@ -1,4 +1,4 @@
-export default class FormHelpersServices {
+class FormHelpersServices {
     constructor(form) {
         this.form = form;
     }
@@ -33,3 +33,5 @@ export default class FormHelpersServices {
         return false;
     }
 }
+
+export default FormHelpersServices

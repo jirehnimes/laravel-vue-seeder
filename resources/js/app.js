@@ -40,12 +40,22 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    if(to.matched.some(record => record.meta.requiresAuth)) {
-        if (store.getters.isLoggedIn) {
-            next()
-            return
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        let pathExplode = to.path.split('/')
+
+        if (pathExplode[1] === 'admin') {
+            if (store.getters.isLoggedIn('admin')) {
+                next()
+                return
+            }
+            next('/admin/login')
+        } else {
+            if (store.getters.isLoggedIn('web')) {
+                next()
+                return
+            }
+            next('/login')
         }
-        next('/login') 
     } else {
         next() 
     }

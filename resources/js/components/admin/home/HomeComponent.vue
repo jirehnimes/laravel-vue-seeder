@@ -1,5 +1,5 @@
 <template>
-    <section class="container-fluid ">
+    <section class="admin container-fluid ">
         <admin-navbar></admin-navbar>
         <admin-sidebar></admin-sidebar>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\BusinessLogics\AuthenticateBL;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Models\Token;
 use App\Models\User\Admin;
 use App\Models\User\User;
 use Auth;
@@ -30,13 +31,13 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         $input = $request->input();
-        if (Auth::attempt(['email' => $input['email'], 'password' => $input['password']])) {
-            $user = User::where(['email' => $input['email']])->first();
+        if (Auth::attempt(['email' => $input['email'], 'password' => $input['password'], 'user_level' => User::USER_LEVEL])) {
+            $user = User::where(['email' => $input['email'], 'user_level' => User::USER_LEVEL])->first();
             $user['token'] = $user->createToken(Token::createTokenName($user['email']))->accessToken;
 
             return response()->json($user);
         }
-        return response()->json(false);
+        return response()->json(false, 402);
     }
 
     /**
@@ -66,15 +67,34 @@ class AuthController extends Controller
     }
 
     /**
-     * User registration.
+     * Admin login.
      * 
-     * @param  RegisterRequest $request [description]
+     * @param LoginRequest $request Validated request data.
      * 
-     * @return [type]                   [description]
+     * @return JSON response.
+     */
+    public function adminLogin(LoginRequest $request)
+    {
+        $input = $request->input();
+        if (Auth::attempt(['email' => $input['email'], 'password' => $input['password'], 'user_level' => Admin::USER_LEVEL])) {
+            $user = User::where(['email' => $input['email'], 'user_level' => Admin::USER_LEVEL])->first();
+            $user['token'] = $user->createToken(Token::createTokenName($user['email']))->accessToken;
+
+            return response()->json($user);
+        }
+        return response()->json(false, 402);
+    }
+
+    /**
+     * Admin registration.
+     * 
+     * @param RegisterRequest $request Validated request data.
+     * 
+     * @return JSON response.
      */
     public function adminRegister(RegisterRequest $request)
     {
-        $user = $this->authenticateBL->register($request->input(), 99);
+        $user = $this->authenticateBL->register($request->input(), Admin::USER_LEVEL);
 
         return response()->json($user);
     }

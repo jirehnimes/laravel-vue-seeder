@@ -17,6 +17,11 @@ class User extends Authenticatable
     const TABLE = 'users';
 
     /**
+     * Registered user level
+     */
+    const USER_LEVEL = 1;
+
+    /**
      * Field validators.
      */
     const VALIDATE_FIRST_NAME = ['required', 'string', 'max:255'];

@@ -2,42 +2,55 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="box box-success">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">{{ app_name }}</h3>
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">APP NAME</h3>
                     </div>
-                    <div class="box-body">
+                    <!-- /.card-header -->
+
+                    <div class="card-body">
+                        <h3>Register</h3>
+
                         <form role="form">
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Email address</label>
-                                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                                    <label>Email address</label>
+                                    <input type="text" class="form-control" 
+                                        :class="[FormHelper.is_invalid(form.errors.email)]"
+                                        placeholder="Email address" v-model="form.data.email">
+                                    <div class="invalid-feedback">{{ FormHelper.display_error(form.errors.email) }}</div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputPassword1">Password</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                    <label>Password</label>
+                                    <input type="password" class="form-control" 
+                                        :class="[FormHelper.is_invalid(form.errors.password)]"
+                                        placeholder="Password" v-model="form.data.password">
+                                    <div class="invalid-feedback">{{ FormHelper.display_error(form.errors.password) }}</div>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                    <label class="form-check-label" for="exampleCheck1">Remember me</label>
+                                    <input type="checkbox" class="form-check-input">
+                                    <label class="form-check-label">Remember me</label>
                                 </div>
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">Login</button>
-                                <button type="submit" class="btn btn-primary">Register</button>
-                                <a href="#">Forgot password</a>
+                                <button type="submit" class="btn btn-primary" v-on:click="submit">Login</button>
+                                <router-link to="/admin/register" class="btn btn-outline-success">Register</router-link>
+                                <br><router-link to="/forgot_password">Forgot password</router-link>
                             </div>
                         </form>
+                        <!-- /form -->
                     </div>
+                    <!-- /.card-body -->
                 </div>
+                <!-- /.card -->
             </div>
         </div>
     </div>
 </template>
 
 <style type="text/css">
-    .box {
+    .card {
         margin-top: 50px;
     }
 </style>

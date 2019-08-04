@@ -1,6 +1,7 @@
 import AuthRequestsServices from '../../../../services/requests/auth.js'
 import AuthHelpersServices from '../../../../services/helpers/auth.js'
 import FormHelpersServices from '../../../../services/helpers/form.js'
+import Admin from '../../../../models/admin.js'
 
 export default {
     data() {
@@ -31,7 +32,7 @@ export default {
         submit(event) {
             var that = this
 
-            AuthRequestsServices.register(this.form.data)
+            AuthRequestsServices.adminRegister(this.form.data)
                 .then(function(response) {
                     response.data['password'] = that.form.data.password
                     
@@ -39,7 +40,7 @@ export default {
                     that.form = that.FormHelper.initialize_form_errors()
 
                     if (response.status === 200) {
-                        AuthHelpersServices.authenticate(that, response.data)
+                        AuthHelpersServices.authenticate(that, response.data, Admin.LEVEL)
                     }
                 })
                 .catch(function(error) {

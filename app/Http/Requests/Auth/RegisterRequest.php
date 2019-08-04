@@ -24,16 +24,13 @@ class RegisterRequest extends FormRequest
      */
     public function rules()
     {
-        $email = User::VALIDATE_EMAIL;
-        $email[] = 'unique:users';
-
         $password = User::VALIDATE_PASSWORD;
         $password[] = 'confirmed';
 
         return [
             'first_name' => User::VALIDATE_FIRST_NAME,
             'last_name'  => User::VALIDATE_LAST_NAME,
-            'email'      => $email,
+            'email'      => User::VALIDATE_EMAIL,
             'password'   => $password,
             'user_level' => 'unique:users'
         ];
