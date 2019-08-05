@@ -9,7 +9,8 @@ export default {
             form: {
                 init: {
                     email: '',
-                    password: ''
+                    password: '',
+                    remember_me: false
                 },
                 data: {},
                 errors: {
@@ -25,7 +26,7 @@ export default {
     },
     methods: {
         submit(event) {
-            var that = this
+            let that = this
 
             AuthHelpersServices.authenticate(that, this.form.data, Admin.LEVEL)
                 .then(response => {

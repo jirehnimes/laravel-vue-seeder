@@ -36,12 +36,12 @@ export const store = new Vuex.Store({
         auth_request(state, userLevel) {
             state[getKeyByLevel(userLevel)].status = 'loading'
         },
-        auth_success(state, token, user, userLevel) {
-            let keyLevel = getKeyByLevel(userLevel)
+        auth_success(state, params) {
+            let keyLevel = getKeyByLevel(params.userLevel)
 
             state[keyLevel].status = 'success'
-            state[keyLevel].token = token
-            state[keyLevel].user = user
+            state[keyLevel].token = params.token
+            state[keyLevel].user = params.user
         },
         auth_error(state, userLevel) {
             state[getKeyByLevel(userLevel)].status = 'error'
@@ -67,7 +67,14 @@ export const store = new Vuex.Store({
 
                 // axios.defaults.headers.common['Authorization'] = token;
 
-                commit('auth_success', token, user, params.userLevel)
+                commit(
+                    'auth_success', 
+                    {
+                        token: token, 
+                        user: user, 
+                        userLevel: params.userLevel
+                    }
+                )
 
                 resolve(true)
             })

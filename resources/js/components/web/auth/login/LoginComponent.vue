@@ -27,7 +27,7 @@
                                     <div class="invalid-feedback">{{ FormHelper.display_error(form.errors.password) }}</div>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input">
+                                    <input type="checkbox" class="form-check-input" v-model="form.data.remember_me">
                                     <label class="form-check-label">Remember me</label>
                                 </div>
                             </div>

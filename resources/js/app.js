@@ -17,21 +17,6 @@ Vue.use(VueAxios, axios);
 
 // Configs
 
-// Vue.component(
-//     'passport-clients',
-//     require('./components/passport/Clients.vue').default
-// );
-
-// Vue.component(
-//     'passport-authorized-clients',
-//     require('./components/passport/AuthorizedClients.vue').default
-// );
-
-// Vue.component(
-//     'passport-personal-access-tokens',
-//     require('./components/passport/PersonalAccessTokens.vue').default
-// );
-
 import routes from './routes.js';
 
 const router = new VueRouter({ 
@@ -61,4 +46,4 @@ router.beforeEach((to, from, next) => {
     }
 })
 
-new Vue(Vue.util.extend({ router, store }, App)).$mount('#app');
+new Vue(Vue.util.extend({ store, router }, App)).$mount('#app');

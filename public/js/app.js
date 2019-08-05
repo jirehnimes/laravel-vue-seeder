@@ -1984,7 +1984,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  computed: {}
+  mounted: function mounted() {
+    if (this.$store.getters.isLoggedIn('admin')) {
+      this.$router.push('/admin/home');
+    } else {
+      this.$router.push('/admin/login');
+    }
+  }
 });
 
 /***/ }),
@@ -2089,7 +2095,8 @@ __webpack_require__.r(__webpack_exports__);
       form: {
         init: {
           email: '',
-          password: ''
+          password: '',
+          remember_me: false
         },
         data: {},
         errors: {
@@ -2258,7 +2265,8 @@ __webpack_require__.r(__webpack_exports__);
       form: {
         init: {
           email: '',
-          password: ''
+          password: '',
+          remember_me: false
         },
         data: {},
         errors: {
@@ -38725,7 +38733,57 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(1)
+                _c("div", { staticClass: "form-check" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.data.remember_me,
+                        expression: "form.data.remember_me"
+                      }
+                    ],
+                    staticClass: "form-check-input",
+                    attrs: { type: "checkbox" },
+                    domProps: {
+                      checked: Array.isArray(_vm.form.data.remember_me)
+                        ? _vm._i(_vm.form.data.remember_me, null) > -1
+                        : _vm.form.data.remember_me
+                    },
+                    on: {
+                      change: function($event) {
+                        var $$a = _vm.form.data.remember_me,
+                          $$el = $event.target,
+                          $$c = $$el.checked ? true : false
+                        if (Array.isArray($$a)) {
+                          var $$v = null,
+                            $$i = _vm._i($$a, $$v)
+                          if ($$el.checked) {
+                            $$i < 0 &&
+                              _vm.$set(
+                                _vm.form.data,
+                                "remember_me",
+                                $$a.concat([$$v])
+                              )
+                          } else {
+                            $$i > -1 &&
+                              _vm.$set(
+                                _vm.form.data,
+                                "remember_me",
+                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                              )
+                          }
+                        } else {
+                          _vm.$set(_vm.form.data, "remember_me", $$c)
+                        }
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { staticClass: "form-check-label" }, [
+                    _vm._v("Remember me")
+                  ])
+                ])
               ]),
               _vm._v(" "),
               _c(
@@ -38749,12 +38807,7 @@ var render = function() {
                       attrs: { to: "/admin/register" }
                     },
                     [_vm._v("Register")]
-                  ),
-                  _vm._v(" "),
-                  _c("br"),
-                  _c("router-link", { attrs: { to: "/forgot_password" } }, [
-                    _vm._v("Forgot password")
-                  ])
+                  )
                 ],
                 1
               )
@@ -38772,19 +38825,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
       _c("h3", { staticClass: "card-title" }, [_vm._v("APP NAME")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-check" }, [
-      _c("input", {
-        staticClass: "form-check-input",
-        attrs: { type: "checkbox" }
-      }),
-      _vm._v(" "),
-      _c("label", { staticClass: "form-check-label" }, [_vm._v("Remember me")])
     ])
   }
 ]
@@ -40811,7 +40851,57 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(1)
+                _c("div", { staticClass: "form-check" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.data.remember_me,
+                        expression: "form.data.remember_me"
+                      }
+                    ],
+                    staticClass: "form-check-input",
+                    attrs: { type: "checkbox" },
+                    domProps: {
+                      checked: Array.isArray(_vm.form.data.remember_me)
+                        ? _vm._i(_vm.form.data.remember_me, null) > -1
+                        : _vm.form.data.remember_me
+                    },
+                    on: {
+                      change: function($event) {
+                        var $$a = _vm.form.data.remember_me,
+                          $$el = $event.target,
+                          $$c = $$el.checked ? true : false
+                        if (Array.isArray($$a)) {
+                          var $$v = null,
+                            $$i = _vm._i($$a, $$v)
+                          if ($$el.checked) {
+                            $$i < 0 &&
+                              _vm.$set(
+                                _vm.form.data,
+                                "remember_me",
+                                $$a.concat([$$v])
+                              )
+                          } else {
+                            $$i > -1 &&
+                              _vm.$set(
+                                _vm.form.data,
+                                "remember_me",
+                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                              )
+                          }
+                        } else {
+                          _vm.$set(_vm.form.data, "remember_me", $$c)
+                        }
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { staticClass: "form-check-label" }, [
+                    _vm._v("Remember me")
+                  ])
+                ])
               ]),
               _vm._v(" "),
               _c(
@@ -40858,19 +40948,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "box-header with-border" }, [
       _c("h3", { staticClass: "box-title" }, [_vm._v("Login")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-check" }, [
-      _c("input", {
-        staticClass: "form-check-input",
-        attrs: { type: "checkbox" }
-      }),
-      _vm._v(" "),
-      _c("label", { staticClass: "form-check-label" }, [_vm._v("Remember me")])
     ])
   }
 ]
@@ -57309,18 +57386,6 @@ __webpack_require__(/*! ./bootstrap.js */ "./resources/js/bootstrap.js"); // Pac
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_axios__WEBPACK_IMPORTED_MODULE_3___default.a, axios__WEBPACK_IMPORTED_MODULE_4___default.a); // Configs
-// Vue.component(
-//     'passport-clients',
-//     require('./components/passport/Clients.vue').default
-// );
-// Vue.component(
-//     'passport-authorized-clients',
-//     require('./components/passport/AuthorizedClients.vue').default
-// );
-// Vue.component(
-//     'passport-personal-access-tokens',
-//     require('./components/passport/PersonalAccessTokens.vue').default
-// );
 
 
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
@@ -57353,8 +57418,8 @@ router.beforeEach(function (to, from, next) {
   }
 });
 new vue__WEBPACK_IMPORTED_MODULE_0___default.a(vue__WEBPACK_IMPORTED_MODULE_0___default.a.util.extend({
-  router: router,
-  store: _store_js__WEBPACK_IMPORTED_MODULE_6__["store"]
+  store: _store_js__WEBPACK_IMPORTED_MODULE_6__["store"],
+  router: router
 }, _App_vue__WEBPACK_IMPORTED_MODULE_5__["default"])).$mount('#app');
 
 /***/ }),
@@ -57875,15 +57940,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!********************************************************************!*\
   !*** ./resources/js/components/admin/sidebar/SidebarComponent.vue ***!
   \********************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _SidebarComponent_vue_vue_type_template_id_70722d3f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SidebarComponent.vue?vue&type=template&id=70722d3f& */ "./resources/js/components/admin/sidebar/SidebarComponent.vue?vue&type=template&id=70722d3f&");
 /* harmony import */ var _sidebar_js_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./sidebar.js?vue&type=script&lang=js& */ "./resources/js/components/admin/sidebar/sidebar.js?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _sidebar_js_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _sidebar_js_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -57931,7 +57995,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!***********************************************************************************!*\
   !*** ./resources/js/components/admin/sidebar/sidebar.js?vue&type=script&lang=js& ***!
   \***********************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -58628,46 +58692,31 @@ __webpack_require__.r(__webpack_exports__);
 var AuthHelpersServices = {
   authenticate: function authenticate(that, form) {
     var level = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
-    var _form = {
-      email: form.email,
-      password: form.password
-    };
     return new Promise(function (resolve, reject) {
+      var functionName = 'login';
+      var redirect = '/';
+
       if (level === _models_admin_js__WEBPACK_IMPORTED_MODULE_1__["default"].LEVEL) {
-        _requests_auth_js__WEBPACK_IMPORTED_MODULE_0__["default"].adminLogin(_form).then(function (response) {
-          if (response.status === 200) {
-            var params = {
-              responseData: response.data,
-              userLevel: level
-            };
-            that.$store.dispatch('login', params).then(function () {
-              that.$router.push('/admin/home');
-              resolve(true);
-            })["catch"](function (error) {
-              reject(error);
-            });
-          }
-        })["catch"](function (error) {
-          reject(error);
-        });
-      } else {
-        _requests_auth_js__WEBPACK_IMPORTED_MODULE_0__["default"].login(_form).then(function (response) {
-          if (response.status === 200) {
-            var params = {
-              responseData: response.data,
-              userLevel: level
-            };
-            that.$store.dispatch('login', params).then(function () {
-              that.$router.push('/');
-              resolve(true);
-            })["catch"](function (error) {
-              reject(error);
-            });
-          }
-        })["catch"](function (error) {
-          reject(error);
-        });
+        functionName = 'adminLogin';
+        redirect = '/admin/home';
       }
+
+      _requests_auth_js__WEBPACK_IMPORTED_MODULE_0__["default"][functionName](form).then(function (response) {
+        if (response.status === 200) {
+          var params = {
+            responseData: response.data.original,
+            userLevel: level
+          };
+          that.$store.dispatch('login', params).then(function () {
+            that.$router.push(redirect);
+            resolve(true);
+          })["catch"](function (error) {
+            reject(error);
+          });
+        }
+      })["catch"](function (error) {
+        reject(error);
+      });
     });
   }
 };
@@ -58944,11 +58993,11 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     auth_request: function auth_request(state, userLevel) {
       state[getKeyByLevel(userLevel)].status = 'loading';
     },
-    auth_success: function auth_success(state, token, user, userLevel) {
-      var keyLevel = getKeyByLevel(userLevel);
+    auth_success: function auth_success(state, params) {
+      var keyLevel = getKeyByLevel(params.userLevel);
       state[keyLevel].status = 'success';
-      state[keyLevel].token = token;
-      state[keyLevel].user = user;
+      state[keyLevel].token = params.token;
+      state[keyLevel].user = params.user;
     },
     auth_error: function auth_error(state, userLevel) {
       state[getKeyByLevel(userLevel)].status = 'error';
@@ -58973,7 +59022,11 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
         } // axios.defaults.headers.common['Authorization'] = token;
 
 
-        commit('auth_success', token, user, params.userLevel);
+        commit('auth_success', {
+          token: token,
+          user: user,
+          userLevel: params.userLevel
+        });
         resolve(true);
       });
     },

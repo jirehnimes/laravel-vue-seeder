@@ -28,7 +28,7 @@
                                     <div class="invalid-feedback">{{ FormHelper.display_error(form.errors.password) }}</div>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input">
+                                    <input type="checkbox" class="form-check-input" v-model="form.data.remember_me">
                                     <label class="form-check-label">Remember me</label>
                                 </div>
                             </div>
@@ -36,7 +36,6 @@
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary" v-on:click="submit">Login</button>
                                 <router-link to="/admin/register" class="btn btn-outline-success">Register</router-link>
-                                <br><router-link to="/forgot_password">Forgot password</router-link>
                             </div>
                         </form>
                         <!-- /form -->

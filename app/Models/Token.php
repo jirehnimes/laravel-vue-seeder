@@ -8,4 +8,9 @@ class Token
     {
         return config('app.name') . ' ' . $name;
     }
+
+    public static function createToken($user)
+    {
+        
+    }
 }
