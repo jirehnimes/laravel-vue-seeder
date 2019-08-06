@@ -11,7 +11,7 @@ const AuthRequestsServices = {
                 return response
             })
             .catch(function(error) {
-                throw error.response.data.errors
+                throw error.response
             })
     },
 
@@ -31,7 +31,7 @@ const AuthRequestsServices = {
                 return response
             })
             .catch(function(error) {
-                throw error.response.data.errors
+                throw error.response
             })
     },
 

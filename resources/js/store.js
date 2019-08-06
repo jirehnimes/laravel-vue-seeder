@@ -21,12 +21,18 @@ export const store = new Vuex.Store({
         web: {
             status: '',
             token: localStorage.getItem(User.TOKEN_NAME) || '',
-            user : {}
+            user : {
+                name: localStorage.getItem(User.USER_NAME) || '',
+                remember: localStorage.getItem(User.REMEMBER) || '',
+            }
         },
         admin: {
             status: '',
             token: localStorage.getItem(Admin.TOKEN_NAME) || '',
-            user : {}
+            user : {
+                name: localStorage.getItem(Admin.USER_NAME) || '',
+                remember: localStorage.getItem(Admin.REMEMBER) || '',
+            }
         }
     },
     mutations: {
@@ -52,15 +58,26 @@ export const store = new Vuex.Store({
         login({commit}, params) {
             return new Promise((resolve, reject) => {
                 let token = params.token
-                let user = params
+                let user = params.email
                 let level = params.user_level
+                let remember = ('remember' in params) ? params.remember : undefined
 
                 commit('auth_request', level)
 
                 if (level === Admin.LEVEL) {
                     localStorage.setItem(Admin.TOKEN_NAME, token)
+
+                    if (remember) {
+                        localStorage.setItem(Admin.USER_NAME, user)
+                        localStorage.setItem(Admin.REMEMBER, remember)
+                    }
                 } else {
                     localStorage.setItem(User.TOKEN_NAME, token)
+
+                    if (remember) {
+                        localStorage.setItem(User.USER_NAME, user)
+                        localStorage.setItem(User.REMEMBER, remember)
+                    }
                 }
 
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
@@ -69,7 +86,10 @@ export const store = new Vuex.Store({
                     'auth_success', 
                     {
                         token: token, 
-                        user: user, 
+                        user: {
+                            name: user,
+                            remember: remember
+                        }, 
                         userLevel: level
                     }
                 )
@@ -77,14 +97,24 @@ export const store = new Vuex.Store({
                 resolve(true)
             })
         },
-        logout({commit}, params) {
+        logout({commit, state}, params) {
             return new Promise((resolve, reject) => {
                 commit('logout', params.userLevel)
 
                 if (params.userLevel === Admin.LEVEL) {
                     localStorage.removeItem(Admin.TOKEN_NAME)
+
+                    if (!state.admin.user.remember) {
+                        localStorage.removeItem(Admin.USER_NAME)
+                        localStorage.removeItem(Admin.REMEMBER)
+                    }
                 } else {
                     localStorage.removeItem(User.TOKEN_NAME)
+
+                    if (!state.web.user.remember) {
+                        localStorage.removeItem(User.USER_NAME)
+                        localStorage.removeItem(User.REMEMBER)
+                    }
                 }
 
                 delete axios.defaults.headers.common['Authorization']
@@ -95,6 +125,8 @@ export const store = new Vuex.Store({
     getters : {
         isLoggedIn: state => userLevel => !!state[userLevel].token,
         authStatus: state => userLevel => state[userLevel].status,
-        userToken: state => userLevel => state[userLevel].token
+        userToken: state => userLevel => state[userLevel].token,
+        userName: state => userLevel => state[userLevel].user.name,
+        getRemember: state => userLevel => state[userLevel].user.remember
     }
 })

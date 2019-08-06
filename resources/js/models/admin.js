@@ -3,7 +3,11 @@ let Admin = {
 
     REQUEST_HEADER: 'Admin-Authorization',
 
-    TOKEN_NAME: 'admin-token'
+    TOKEN_NAME: 'admin-token',
+
+    USER_NAME: 'admin-name',
+
+    REMEMBER: 'admin-remember'
 }
 
 export default Admin

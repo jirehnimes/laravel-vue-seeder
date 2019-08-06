@@ -31,7 +31,7 @@ class AuthController extends Controller
         $user = $this->authenticateBL->login($request->input(), User::USER_LEVEL);
 
         if ($user === false) {
-            return response()->json(false, 402);
+            return response()->json(false, 401);
         }
 
         return response()->json($user);
@@ -75,7 +75,7 @@ class AuthController extends Controller
         $user = $this->authenticateBL->login($request->input(), Admin::USER_LEVEL);
 
         if ($user === false) {
-            return response()->json(false, 402);
+            return response()->json(false, 401);
         }
 
         return response()->json($user);

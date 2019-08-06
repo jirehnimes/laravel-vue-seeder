@@ -12,6 +12,13 @@
                     <div class="box-body">
                         <form role="form">
                             <div class="card-body">
+                                <div class="alert alert-danger" role="alert" v-if="FormHelper.display_error(form.errors.authenticate)">
+                                    {{ FormHelper.display_error(form.errors.authenticate) }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+
                                 <div class="form-group">
                                     <label>Email address</label>
                                     <input type="text" class="form-control" 

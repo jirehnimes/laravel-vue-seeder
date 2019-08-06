@@ -28,7 +28,7 @@ class AuthServiceProvider extends ServiceProvider
 
         Passport::routes();
         Passport::enableImplicitGrant();
-        // Passport::tokensExpireIn(now()->addMinutes(1));
-        Passport::personalAccessTokensExpireIn(now()->addMinutes(1));
+        // Modify SESSION_LIFETIME in ENV file.
+        Passport::personalAccessTokensExpireIn(now()->addMinutes(config('session.lifetime')));
     }
 }

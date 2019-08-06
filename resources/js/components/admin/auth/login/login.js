@@ -8,14 +8,15 @@ export default {
         return {
             form: {
                 init: {
-                    email: '',
+                    email: this.$store.getters.userName('admin') || '',
                     password: '',
                     remember_me: false
                 },
                 data: {},
                 errors: {
                     email: [],
-                    password: []
+                    password: [],
+                    authenticate: []
                 }
             }
         }
@@ -34,7 +35,12 @@ export default {
                     that.form = that.FormHelper.initialize_form_errors()
                 })
                 .catch(error => {
-                    that.form = that.FormHelper.update_error_fields(error)
+                    if (error.status === 401) {
+                        that.form.errors.authenticate[0] = 'Invalid email address or password. Try again.'
+                    } else {
+                        that.form = that.FormHelper.update_error_fields(error.data.errors)
+                    }
+
                     that.form = that.FormHelper.initialize_form_data()
                 })
 

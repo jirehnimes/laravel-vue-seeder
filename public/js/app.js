@@ -1867,21 +1867,24 @@ __webpack_require__.r(__webpack_exports__);
     this.$http.interceptors.response.use(undefined, function (err) {
       var errorResponse = err.response;
       return new Promise(function (resolve, reject) {
+        // Unauthorized handler
         if (errorResponse.status === 401 && errorResponse.config && !errorResponse.config.__isRetryRequest) {
-          var pathExplode = that.$route.fullPath.split('/');
+          var pathExplode = that.$route.fullPath.split('/'); // If request location is not for login, execute logout.
 
-          if (pathExplode[1] === 'admin') {
-            that.$store.dispatch('logout', {
-              userLevel: 99
-            }).then(function () {
-              that.$router.push('/admin');
-            });
-          } else {
-            that.$store.dispatch('logout', {
-              userLevel: 1
-            }).then(function () {
-              that.$router.push('/');
-            });
+          if (!pathExplode.includes('login')) {
+            if (pathExplode[1] === 'admin') {
+              that.$store.dispatch('logout', {
+                userLevel: 99
+              }).then(function () {
+                that.$router.push('/admin');
+              });
+            } else {
+              that.$store.dispatch('logout', {
+                userLevel: 1
+              }).then(function () {
+                that.$router.push('/');
+              });
+            }
           }
         }
 
@@ -2125,14 +2128,15 @@ __webpack_require__.r(__webpack_exports__);
     return {
       form: {
         init: {
-          email: '',
+          email: this.$store.getters.userName('admin') || '',
           password: '',
           remember_me: false
         },
         data: {},
         errors: {
           email: [],
-          password: []
+          password: [],
+          authenticate: []
         }
       }
     };
@@ -2148,7 +2152,12 @@ __webpack_require__.r(__webpack_exports__);
         that.form = that.FormHelper.initialize_form_data();
         that.form = that.FormHelper.initialize_form_errors();
       })["catch"](function (error) {
-        that.form = that.FormHelper.update_error_fields(error);
+        if (error.status === 401) {
+          that.form.errors.authenticate[0] = 'Invalid email address or password. Try again.';
+        } else {
+          that.form = that.FormHelper.update_error_fields(error.data.errors);
+        }
+
         that.form = that.FormHelper.initialize_form_data();
       });
       event.preventDefault();
@@ -2294,14 +2303,15 @@ __webpack_require__.r(__webpack_exports__);
     return {
       form: {
         init: {
-          email: '',
+          email: this.$store.getters.userName('web') || '',
           password: '',
           remember_me: false
         },
         data: {},
         errors: {
           email: [],
-          password: []
+          password: [],
+          authenticate: []
         }
       }
     };
@@ -2317,7 +2327,12 @@ __webpack_require__.r(__webpack_exports__);
         that.form = that.FormHelper.initialize_form_data();
         that.form = that.FormHelper.initialize_form_errors();
       })["catch"](function (error) {
-        that.form = that.FormHelper.update_error_fields(error);
+        if (error.status === 401) {
+          that.form.errors.authenticate[0] = 'Invalid email address or password. Try again.';
+        } else {
+          that.form = that.FormHelper.update_error_fields(error.data.errors);
+        }
+
         that.form = that.FormHelper.initialize_form_data();
       });
       event.preventDefault();
@@ -38695,6 +38710,28 @@ var render = function() {
             _vm._v(" "),
             _c("form", { attrs: { role: "form" } }, [
               _c("div", { staticClass: "card-body" }, [
+                _vm.FormHelper.display_error(_vm.form.errors.authenticate)
+                  ? _c(
+                      "div",
+                      {
+                        staticClass: "alert alert-danger",
+                        attrs: { role: "alert" }
+                      },
+                      [
+                        _vm._v(
+                          "\n                                " +
+                            _vm._s(
+                              _vm.FormHelper.display_error(
+                                _vm.form.errors.authenticate
+                              )
+                            ) +
+                            "\n                                "
+                        ),
+                        _vm._m(0)
+                      ]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
                   _c("label", [_vm._v("Email address")]),
                   _vm._v(" "),
@@ -38852,7 +38889,25 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "alert",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  }
+]
 render._withStripped = true
 
 
@@ -40789,6 +40844,28 @@ var render = function() {
           _c("div", { staticClass: "box-body" }, [
             _c("form", { attrs: { role: "form" } }, [
               _c("div", { staticClass: "card-body" }, [
+                _vm.FormHelper.display_error(_vm.form.errors.authenticate)
+                  ? _c(
+                      "div",
+                      {
+                        staticClass: "alert alert-danger",
+                        attrs: { role: "alert" }
+                      },
+                      [
+                        _vm._v(
+                          "\n                                " +
+                            _vm._s(
+                              _vm.FormHelper.display_error(
+                                _vm.form.errors.authenticate
+                              )
+                            ) +
+                            "\n                                "
+                        ),
+                        _vm._m(1)
+                      ]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
                   _c("label", [_vm._v("Email address")]),
                   _vm._v(" "),
@@ -40959,6 +41036,23 @@ var staticRenderFns = [
     return _c("div", { staticClass: "box-header with-border" }, [
       _c("h3", { staticClass: "box-title" }, [_vm._v("Login")])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "alert",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   }
 ]
 render._withStripped = true
@@ -58582,7 +58676,9 @@ __webpack_require__.r(__webpack_exports__);
 var Admin = {
   LEVEL: 99,
   REQUEST_HEADER: 'Admin-Authorization',
-  TOKEN_NAME: 'admin-token'
+  TOKEN_NAME: 'admin-token',
+  USER_NAME: 'admin-name',
+  REMEMBER: 'admin-remember'
 };
 /* harmony default export */ __webpack_exports__["default"] = (Admin);
 
@@ -58599,7 +58695,9 @@ var Admin = {
 __webpack_require__.r(__webpack_exports__);
 var User = {
   LEVEL: 1,
-  TOKEN_NAME: 'token'
+  TOKEN_NAME: 'token',
+  USER_NAME: 'user-name',
+  REMEMBER: 'user-remember'
 };
 /* harmony default export */ __webpack_exports__["default"] = (User);
 
@@ -58723,12 +58821,17 @@ var AuthHelpersServices = {
   authenticate: function authenticate(that, form) {
     var level = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
     return new Promise(function (resolve, reject) {
+      var userType = level === _models_admin_js__WEBPACK_IMPORTED_MODULE_1__["default"].LEVEL ? 'admin' : 'web';
       var functionName = 'login';
       var redirect = '/';
 
       if (level === _models_admin_js__WEBPACK_IMPORTED_MODULE_1__["default"].LEVEL) {
         functionName = 'adminLogin';
         redirect = '/admin/home';
+      }
+
+      if (that.$store.getters.getRemember(userType)) {
+        form['remember_token'] = that.$store.getters.getRemember(userType);
       }
 
       _requests_auth_js__WEBPACK_IMPORTED_MODULE_0__["default"][functionName](form).then(function (response) {
@@ -58841,7 +58944,7 @@ var AuthRequestsServices = {
     return Requests.post(ROOT_API + '/login', form).then(function (response) {
       return response;
     })["catch"](function (error) {
-      throw error.response.data.errors;
+      throw error.response;
     });
   },
   register: function register(form) {
@@ -58855,7 +58958,7 @@ var AuthRequestsServices = {
     return Requests.postAdmin(ROOT_API + '/login', form).then(function (response) {
       return response;
     })["catch"](function (error) {
-      throw error.response.data.errors;
+      throw error.response;
     });
   },
   adminRegister: function adminRegister(form) {
@@ -59029,12 +59132,18 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     web: {
       status: '',
       token: localStorage.getItem(_models_user_js__WEBPACK_IMPORTED_MODULE_4__["default"].TOKEN_NAME) || '',
-      user: {}
+      user: {
+        name: localStorage.getItem(_models_user_js__WEBPACK_IMPORTED_MODULE_4__["default"].USER_NAME) || '',
+        remember: localStorage.getItem(_models_user_js__WEBPACK_IMPORTED_MODULE_4__["default"].REMEMBER) || ''
+      }
     },
     admin: {
       status: '',
       token: localStorage.getItem(_models_admin_js__WEBPACK_IMPORTED_MODULE_3__["default"].TOKEN_NAME) || '',
-      user: {}
+      user: {
+        name: localStorage.getItem(_models_admin_js__WEBPACK_IMPORTED_MODULE_3__["default"].USER_NAME) || '',
+        remember: localStorage.getItem(_models_admin_js__WEBPACK_IMPORTED_MODULE_3__["default"].REMEMBER) || ''
+      }
     }
   },
   mutations: {
@@ -59060,34 +59169,59 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       var commit = _ref.commit;
       return new Promise(function (resolve, reject) {
         var token = params.token;
-        var user = params;
+        var user = params.email;
         var level = params.user_level;
+        var remember = 'remember' in params ? params.remember : undefined;
         commit('auth_request', level);
 
         if (level === _models_admin_js__WEBPACK_IMPORTED_MODULE_3__["default"].LEVEL) {
           localStorage.setItem(_models_admin_js__WEBPACK_IMPORTED_MODULE_3__["default"].TOKEN_NAME, token);
+
+          if (remember) {
+            localStorage.setItem(_models_admin_js__WEBPACK_IMPORTED_MODULE_3__["default"].USER_NAME, user);
+            localStorage.setItem(_models_admin_js__WEBPACK_IMPORTED_MODULE_3__["default"].REMEMBER, remember);
+          }
         } else {
           localStorage.setItem(_models_user_js__WEBPACK_IMPORTED_MODULE_4__["default"].TOKEN_NAME, token);
+
+          if (remember) {
+            localStorage.setItem(_models_user_js__WEBPACK_IMPORTED_MODULE_4__["default"].USER_NAME, user);
+            localStorage.setItem(_models_user_js__WEBPACK_IMPORTED_MODULE_4__["default"].REMEMBER, remember);
+          }
         }
 
         axios__WEBPACK_IMPORTED_MODULE_2___default.a.defaults.headers.common['Authorization'] = 'Bearer ' + token;
         commit('auth_success', {
           token: token,
-          user: user,
+          user: {
+            name: user,
+            remember: remember
+          },
           userLevel: level
         });
         resolve(true);
       });
     },
     logout: function logout(_ref2, params) {
-      var commit = _ref2.commit;
+      var commit = _ref2.commit,
+          state = _ref2.state;
       return new Promise(function (resolve, reject) {
         commit('logout', params.userLevel);
 
         if (params.userLevel === _models_admin_js__WEBPACK_IMPORTED_MODULE_3__["default"].LEVEL) {
           localStorage.removeItem(_models_admin_js__WEBPACK_IMPORTED_MODULE_3__["default"].TOKEN_NAME);
+
+          if (!state.admin.user.remember) {
+            localStorage.removeItem(_models_admin_js__WEBPACK_IMPORTED_MODULE_3__["default"].USER_NAME);
+            localStorage.removeItem(_models_admin_js__WEBPACK_IMPORTED_MODULE_3__["default"].REMEMBER);
+          }
         } else {
           localStorage.removeItem(_models_user_js__WEBPACK_IMPORTED_MODULE_4__["default"].TOKEN_NAME);
+
+          if (!state.web.user.remember) {
+            localStorage.removeItem(_models_user_js__WEBPACK_IMPORTED_MODULE_4__["default"].USER_NAME);
+            localStorage.removeItem(_models_user_js__WEBPACK_IMPORTED_MODULE_4__["default"].REMEMBER);
+          }
         }
 
         delete axios__WEBPACK_IMPORTED_MODULE_2___default.a.defaults.headers.common['Authorization'];
@@ -59109,6 +59243,16 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     userToken: function userToken(state) {
       return function (userLevel) {
         return state[userLevel].token;
+      };
+    },
+    userName: function userName(state) {
+      return function (userLevel) {
+        return state[userLevel].user.name;
+      };
+    },
+    getRemember: function getRemember(state) {
+      return function (userLevel) {
+        return state[userLevel].user.remember;
       };
     }
   }

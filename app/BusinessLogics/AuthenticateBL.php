@@ -30,14 +30,17 @@ class AuthenticateBL extends BusinessLogic
      */
     public function login($requestInput, $userLevel)
     {
-        $attempt = Auth::attempt(
-            [
-                'email'      => $requestInput['email'], 
-                'password'   => $requestInput['password'], 
-                'user_level' => $userLevel
-            ],
-            $requestInput['remember_me']
-        );
+        $attemptConditions = [
+            'email'      => $requestInput['email'], 
+            'password'   => $requestInput['password'], 
+            'user_level' => $userLevel
+        ];
+
+        if (isset($requestInput['remember_token'])) {
+            $attemptConditions['remember_token'] = $requestInput['remember_token'];
+        }
+
+        $attempt = Auth::attempt($attemptConditions, $requestInput['remember_me']);
 
         if ($attempt) {
             $user = User::where(['email' => $requestInput['email'], 'user_level' => $userLevel])->first();
@@ -48,6 +51,9 @@ class AuthenticateBL extends BusinessLogic
 
             if ($requestInput['remember_me']) {
                 $returnData['remember'] = $user['remember_token'];
+            } else {
+                $user->remember_token = null;
+                $user->save();
             }
 
             return response()->json($returnData);
