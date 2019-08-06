@@ -7,9 +7,6 @@ import User from './models/user.js'
 
 Vue.use(Vuex)
 
-const tokenName = 'token'
-const adminTokenName = 'admin-token'
-
 function getKeyByLevel(userLevel) {
     if (userLevel === Admin.LEVEL) {
         return 'admin'
@@ -23,12 +20,12 @@ export const store = new Vuex.Store({
     state: {
         web: {
             status: '',
-            token: localStorage.getItem(tokenName) || '',
+            token: localStorage.getItem(User.TOKEN_NAME) || '',
             user : {}
         },
         admin: {
             status: '',
-            token: localStorage.getItem(adminTokenName) || '',
+            token: localStorage.getItem(Admin.TOKEN_NAME) || '',
             user : {}
         }
     },
@@ -54,25 +51,26 @@ export const store = new Vuex.Store({
     actions: {
         login({commit}, params) {
             return new Promise((resolve, reject) => {
-                commit('auth_request', params.userLevel)
+                let token = params.token
+                let user = params
+                let level = params.user_level
 
-                const token = params.responseData.token
-                const user = params.responseData
+                commit('auth_request', level)
 
-                if (params.userLevel === Admin.LEVEL) {
-                    localStorage.setItem(adminTokenName, token)
+                if (level === Admin.LEVEL) {
+                    localStorage.setItem(Admin.TOKEN_NAME, token)
                 } else {
-                    localStorage.setItem(tokenName, token)
+                    localStorage.setItem(User.TOKEN_NAME, token)
                 }
 
-                // axios.defaults.headers.common['Authorization'] = token;
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
 
                 commit(
                     'auth_success', 
                     {
                         token: token, 
                         user: user, 
-                        userLevel: params.userLevel
+                        userLevel: level
                     }
                 )
 
@@ -84,18 +82,19 @@ export const store = new Vuex.Store({
                 commit('logout', params.userLevel)
 
                 if (params.userLevel === Admin.LEVEL) {
-                    localStorage.removeItem(adminTokenName)
+                    localStorage.removeItem(Admin.TOKEN_NAME)
                 } else {
-                    localStorage.removeItem(tokenName)
+                    localStorage.removeItem(User.TOKEN_NAME)
                 }
 
-                // delete axios.defaults.headers.common['Authorization']
+                delete axios.defaults.headers.common['Authorization']
                 resolve()
             })
         }
     },
     getters : {
         isLoggedIn: state => userLevel => !!state[userLevel].token,
-        authStatus: state => userLevel => state[userLevel].status
+        authStatus: state => userLevel => state[userLevel].status,
+        userToken: state => userLevel => state[userLevel].token
     }
 })

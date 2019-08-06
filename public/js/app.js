@@ -1863,10 +1863,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
+    var that = this;
     this.$http.interceptors.response.use(undefined, function (err) {
+      var errorResponse = err.response;
       return new Promise(function (resolve, reject) {
-        if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
-          console.log('Token expired.'); // this.$store.dispatch(logout)
+        if (errorResponse.status === 401 && errorResponse.config && !errorResponse.config.__isRetryRequest) {
+          var pathExplode = that.$route.fullPath.split('/');
+
+          if (pathExplode[1] === 'admin') {
+            that.$store.dispatch('logout', {
+              userLevel: 99
+            }).then(function () {
+              that.$router.push('/admin');
+            });
+          } else {
+            that.$store.dispatch('logout', {
+              userLevel: 1
+            }).then(function () {
+              that.$router.push('/');
+            });
+          }
         }
 
         throw err;
@@ -1915,8 +1931,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _navbar_NavbarComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../navbar/NavbarComponent.vue */ "./resources/js/components/admin/navbar/NavbarComponent.vue");
-/* harmony import */ var _sidebar_SidebarComponent_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../sidebar/SidebarComponent.vue */ "./resources/js/components/admin/sidebar/SidebarComponent.vue");
+/* harmony import */ var _services_requests_user_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../services/requests/user.js */ "./resources/js/services/requests/user.js");
+/* harmony import */ var _navbar_NavbarComponent_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../navbar/NavbarComponent.vue */ "./resources/js/components/admin/navbar/NavbarComponent.vue");
+/* harmony import */ var _sidebar_SidebarComponent_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../sidebar/SidebarComponent.vue */ "./resources/js/components/admin/sidebar/SidebarComponent.vue");
 //
 //
 //
@@ -1959,14 +1976,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    'admin-navbar': _navbar_NavbarComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    'admin-sidebar': _sidebar_SidebarComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    'admin-navbar': _navbar_NavbarComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    'admin-sidebar': _sidebar_SidebarComponent_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  computed: {}
+  computed: {},
+  mounted: function mounted() {
+    _services_requests_user_js__WEBPACK_IMPORTED_MODULE_0__["default"].getUsers().then(function (response) {
+      console.log(response);
+    });
+  }
 });
 
 /***/ }),
@@ -2062,13 +2085,21 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _services_requests_user_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../services/requests/user.js */ "./resources/js/services/requests/user.js");
 //
 //
 //
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {
+    _services_requests_user_js__WEBPACK_IMPORTED_MODULE_0__["default"].getUsers().then(function (response) {
+      console.log(response);
+    });
+  }
+});
 
 /***/ }),
 
@@ -2236,7 +2267,6 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {},
   methods: {
     submit: function submit(event) {
-      console.log(this.form_email_address);
       event.preventDefault();
     }
   }
@@ -38654,10 +38684,14 @@ var render = function() {
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-md-8" }, [
         _c("div", { staticClass: "card card-primary" }, [
-          _vm._m(0),
+          _c("div", { staticClass: "card-header" }, [
+            _c("h3", { staticClass: "card-title" }, [
+              _vm._v(_vm._s(_vm.MIX_ENV.appName))
+            ])
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
-            _c("h3", [_vm._v("Register")]),
+            _c("h3", [_vm._v("Login")]),
             _vm._v(" "),
             _c("form", { attrs: { role: "form" } }, [
               _c("div", { staticClass: "card-body" }, [
@@ -38818,16 +38852,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h3", { staticClass: "card-title" }, [_vm._v("APP NAME")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -38853,7 +38878,11 @@ var render = function() {
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-md-8" }, [
         _c("div", { staticClass: "card card-primary" }, [
-          _vm._m(0),
+          _c("div", { staticClass: "card-header" }, [
+            _c("h3", { staticClass: "card-title" }, [
+              _vm._v(_vm._s(_vm.MIX_ENV.appName))
+            ])
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
             _c("h3", [_vm._v("Register")]),
@@ -39077,16 +39106,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h3", { staticClass: "card-title" }, [_vm._v("APP NAME")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -39564,7 +39584,11 @@ var render = function() {
     "aside",
     { staticClass: "main-sidebar sidebar-dark-primary elevation-4" },
     [
-      _vm._m(0),
+      _c("a", { staticClass: "brand-link", attrs: { href: "index3.html" } }, [
+        _c("span", { staticClass: "brand-text font-weight-light" }, [
+          _vm._v(_vm._s(_vm.MIX_ENV.appName))
+        ])
+      ]),
       _vm._v(" "),
       _c(
         "div",
@@ -39573,9 +39597,9 @@ var render = function() {
             "sidebar os-host os-theme-light os-host-overflow os-host-overflow-y os-host-resize-disabled os-host-scrollbar-horizontal-hidden os-host-transition"
         },
         [
-          _vm._m(1),
+          _vm._m(0),
           _vm._v(" "),
-          _vm._m(2),
+          _vm._m(1),
           _vm._v(" "),
           _c("div", {
             staticClass: "os-content-glue",
@@ -39603,7 +39627,7 @@ var render = function() {
                   },
                   [
                     _c("div", { staticClass: "user-panel mt-3 pb-3 mb-3" }, [
-                      _vm._m(3),
+                      _vm._m(2),
                       _vm._v(" "),
                       _c("div", [
                         _c(
@@ -39617,16 +39641,16 @@ var render = function() {
                       ])
                     ]),
                     _vm._v(" "),
-                    _vm._m(4)
+                    _vm._m(3)
                   ]
                 )
               ]
             )
           ]),
           _vm._v(" "),
-          _vm._m(5),
+          _vm._m(4),
           _vm._v(" "),
-          _vm._m(6),
+          _vm._m(5),
           _vm._v(" "),
           _c("div", { staticClass: "os-scrollbar-corner" })
         ]
@@ -39635,20 +39659,6 @@ var render = function() {
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      { staticClass: "brand-link", attrs: { href: "index3.html" } },
-      [
-        _c("span", { staticClass: "brand-text font-weight-light" }, [
-          _vm._v("AdminLTE 3")
-        ])
-      ]
-    )
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -41272,7 +41282,7 @@ var render = function() {
       { staticClass: "navbar navbar-expand-lg navbar-light bg-light" },
       [
         _c("router-link", { staticClass: "navbar-brand", attrs: { to: "/" } }, [
-          _vm._v("APP NAME")
+          _vm._v(_vm._s(_vm.MIX_ENV.appName))
         ]),
         _vm._v(" "),
         _vm._m(0),
@@ -57400,6 +57410,8 @@ router.beforeEach(function (to, from, next) {
 
     if (pathExplode[1] === 'admin') {
       if (_store_js__WEBPACK_IMPORTED_MODULE_6__["store"].getters.isLoggedIn('admin')) {
+        var token = _store_js__WEBPACK_IMPORTED_MODULE_6__["store"].getters.userToken('admin');
+        axios__WEBPACK_IMPORTED_MODULE_4___default.a.defaults.headers.common['Authorization'] = 'Bearer ' + token;
         next();
         return;
       }
@@ -57407,6 +57419,9 @@ router.beforeEach(function (to, from, next) {
       next('/admin/login');
     } else {
       if (_store_js__WEBPACK_IMPORTED_MODULE_6__["store"].getters.isLoggedIn('web')) {
+        var _token = _store_js__WEBPACK_IMPORTED_MODULE_6__["store"].getters.userToken('web');
+
+        axios__WEBPACK_IMPORTED_MODULE_4___default.a.defaults.headers.common['Authorization'] = 'Bearer ' + _token;
         next();
         return;
       }
@@ -57415,6 +57430,19 @@ router.beforeEach(function (to, from, next) {
     }
   } else {
     next();
+  }
+});
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.mixin({
+  data: function data() {
+    return {
+      get MIX_ENV() {
+        return {
+          appName: "LaravelVueSeeder",
+          adminAuthKey: "123456789"
+        };
+      }
+
+    };
   }
 });
 new vue__WEBPACK_IMPORTED_MODULE_0___default.a(vue__WEBPACK_IMPORTED_MODULE_0___default.a.util.extend({
@@ -58553,7 +58581,8 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 var Admin = {
   LEVEL: 99,
-  REQUEST_HEADER: 'Admin-Authorization'
+  REQUEST_HEADER: 'Admin-Authorization',
+  TOKEN_NAME: 'admin-token'
 };
 /* harmony default export */ __webpack_exports__["default"] = (Admin);
 
@@ -58569,7 +58598,8 @@ var Admin = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 var User = {
-  LEVEL: 1
+  LEVEL: 1,
+  TOKEN_NAME: 'token'
 };
 /* harmony default export */ __webpack_exports__["default"] = (User);
 
@@ -58703,11 +58733,7 @@ var AuthHelpersServices = {
 
       _requests_auth_js__WEBPACK_IMPORTED_MODULE_0__["default"][functionName](form).then(function (response) {
         if (response.status === 200) {
-          var params = {
-            responseData: response.data.original,
-            userLevel: level
-          };
-          that.$store.dispatch('login', params).then(function () {
+          that.$store.dispatch('login', response.data.original).then(function () {
             that.$router.push(redirect);
             resolve(true);
           })["catch"](function (error) {
@@ -58909,7 +58935,7 @@ function () {
         config = this._getConfigAdmin();
       }
 
-      return axios.post(_url, data, config);
+      return axios.get(_url, data, config);
     }
   }, {
     key: "_post",
@@ -58941,6 +58967,30 @@ function () {
 
 /***/ }),
 
+/***/ "./resources/js/services/requests/user.js":
+/*!************************************************!*\
+  !*** ./resources/js/services/requests/user.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _requests_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./requests.js */ "./resources/js/services/requests/requests.js");
+
+var Requests = new _requests_js__WEBPACK_IMPORTED_MODULE_0__["default"]();
+var UserRequestsServices = {
+  getUsers: function getUsers() {
+    return Requests.get('/users').then(function (response) {
+      return response;
+    })["catch"](function (error) {// throw error.response.data.errors
+    });
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (UserRequestsServices);
+
+/***/ }),
+
 /***/ "./resources/js/store.js":
 /*!*******************************!*\
   !*** ./resources/js/store.js ***!
@@ -58964,8 +59014,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
-var tokenName = 'token';
-var adminTokenName = 'admin-token';
 
 function getKeyByLevel(userLevel) {
   if (userLevel === _models_admin_js__WEBPACK_IMPORTED_MODULE_3__["default"].LEVEL) {
@@ -58980,12 +59028,12 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
     web: {
       status: '',
-      token: localStorage.getItem(tokenName) || '',
+      token: localStorage.getItem(_models_user_js__WEBPACK_IMPORTED_MODULE_4__["default"].TOKEN_NAME) || '',
       user: {}
     },
     admin: {
       status: '',
-      token: localStorage.getItem(adminTokenName) || '',
+      token: localStorage.getItem(_models_admin_js__WEBPACK_IMPORTED_MODULE_3__["default"].TOKEN_NAME) || '',
       user: {}
     }
   },
@@ -59011,21 +59059,22 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     login: function login(_ref, params) {
       var commit = _ref.commit;
       return new Promise(function (resolve, reject) {
-        commit('auth_request', params.userLevel);
-        var token = params.responseData.token;
-        var user = params.responseData;
+        var token = params.token;
+        var user = params;
+        var level = params.user_level;
+        commit('auth_request', level);
 
-        if (params.userLevel === _models_admin_js__WEBPACK_IMPORTED_MODULE_3__["default"].LEVEL) {
-          localStorage.setItem(adminTokenName, token);
+        if (level === _models_admin_js__WEBPACK_IMPORTED_MODULE_3__["default"].LEVEL) {
+          localStorage.setItem(_models_admin_js__WEBPACK_IMPORTED_MODULE_3__["default"].TOKEN_NAME, token);
         } else {
-          localStorage.setItem(tokenName, token);
-        } // axios.defaults.headers.common['Authorization'] = token;
+          localStorage.setItem(_models_user_js__WEBPACK_IMPORTED_MODULE_4__["default"].TOKEN_NAME, token);
+        }
 
-
+        axios__WEBPACK_IMPORTED_MODULE_2___default.a.defaults.headers.common['Authorization'] = 'Bearer ' + token;
         commit('auth_success', {
           token: token,
           user: user,
-          userLevel: params.userLevel
+          userLevel: level
         });
         resolve(true);
       });
@@ -59036,12 +59085,12 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
         commit('logout', params.userLevel);
 
         if (params.userLevel === _models_admin_js__WEBPACK_IMPORTED_MODULE_3__["default"].LEVEL) {
-          localStorage.removeItem(adminTokenName);
+          localStorage.removeItem(_models_admin_js__WEBPACK_IMPORTED_MODULE_3__["default"].TOKEN_NAME);
         } else {
-          localStorage.removeItem(tokenName);
-        } // delete axios.defaults.headers.common['Authorization']
+          localStorage.removeItem(_models_user_js__WEBPACK_IMPORTED_MODULE_4__["default"].TOKEN_NAME);
+        }
 
-
+        delete axios__WEBPACK_IMPORTED_MODULE_2___default.a.defaults.headers.common['Authorization'];
         resolve();
       });
     }
@@ -59055,6 +59104,11 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     authStatus: function authStatus(state) {
       return function (userLevel) {
         return state[userLevel].status;
+      };
+    },
+    userToken: function userToken(state) {
+      return function (userLevel) {
+        return state[userLevel].token;
       };
     }
   }

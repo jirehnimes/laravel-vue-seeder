@@ -41,6 +41,8 @@
 </style>
 
 <script type="text/javascript">
+import UsersRequestsServices from '../../../services/requests/user.js'
+
 import NavbarComponent from '../navbar/NavbarComponent.vue';
 import SidebarComponent from '../sidebar/SidebarComponent.vue';
 
@@ -50,6 +52,12 @@ export default {
         'admin-sidebar': SidebarComponent
     },
     computed : {
+    },
+    mounted() {
+        UsersRequestsServices.getUsers()
+            .then(function(response) {
+                console.log(response)
+            })
     }
 }
 </script>

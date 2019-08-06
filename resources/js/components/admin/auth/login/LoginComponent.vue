@@ -4,12 +4,12 @@
             <div class="col-md-8">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">APP NAME</h3>
+                        <h3 class="card-title">{{ MIX_ENV.appName }}</h3>
                     </div>
                     <!-- /.card-header -->
 
                     <div class="card-body">
-                        <h3>Register</h3>
+                        <h3>Login</h3>
 
                         <form role="form">
                             <div class="card-body">

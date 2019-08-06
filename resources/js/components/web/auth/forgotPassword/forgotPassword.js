@@ -9,7 +9,6 @@ export default {
     },
     methods: {
         submit: function(event) {
-            console.log(this.form_email_address);
             event.preventDefault();
         }
     }

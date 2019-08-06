@@ -4,7 +4,7 @@
             <div class="col-md-8">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">APP NAME</h3>
+                        <h3 class="card-title">{{ MIX_ENV.appName }}</h3>
                     </div>
                     <!-- /.card-header -->
 

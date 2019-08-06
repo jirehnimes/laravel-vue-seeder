@@ -35,7 +35,7 @@ class RequestsServices {
             config = this._getConfigAdmin()
         }
 
-        return axios.post(_url, data, config)
+        return axios.get(_url, data, config)
     }
 
     _post(_url, data, level = 1) {

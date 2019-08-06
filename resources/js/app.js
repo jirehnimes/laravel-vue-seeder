@@ -30,12 +30,16 @@ router.beforeEach((to, from, next) => {
 
         if (pathExplode[1] === 'admin') {
             if (store.getters.isLoggedIn('admin')) {
+                let token = store.getters.userToken('admin')
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
                 next()
                 return
             }
             next('/admin/login')
         } else {
             if (store.getters.isLoggedIn('web')) {
+                let token = store.getters.userToken('web')
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
                 next()
                 return
             }
@@ -43,6 +47,19 @@ router.beforeEach((to, from, next) => {
         }
     } else {
         next() 
+    }
+})
+
+Vue.mixin({
+    data() {
+        return {
+            get MIX_ENV() {
+                return {
+                    appName: process.env.MIX_APP_NAME,
+                    adminAuthKey: process.env.MIX_ADMIN_AUTHORIZATION_KEY
+                } 
+            }
+        }
     }
 })
 

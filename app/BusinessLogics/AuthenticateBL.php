@@ -42,9 +42,15 @@ class AuthenticateBL extends BusinessLogic
         if ($attempt) {
             $user = User::where(['email' => $requestInput['email'], 'user_level' => $userLevel])->first();
 
-            $user['token'] = $user->createToken(Token::createTokenName($user['email']))->accessToken;
+            $returnData['email'] = $user['email'];
+            $returnData['user_level'] = $user['user_level'];
+            $returnData['token'] = $user->createToken(Token::createTokenName($user['email']))->accessToken;
 
-            return response()->json($user);
+            if ($requestInput['remember_me']) {
+                $returnData['remember'] = $user['remember_token'];
+            }
+
+            return response()->json($returnData);
         }
 
         return false;

@@ -16,12 +16,7 @@ const AuthHelpersServices = {
             AuthRequestsServices[functionName](form) 
                 .then(function(response) {
                     if (response.status === 200) {
-                        let params = {
-                            responseData: response.data.original,
-                            userLevel: level
-                        }
-
-                        that.$store.dispatch('login', params)
+                        that.$store.dispatch('login', response.data.original)
                             .then(() => {
                                 that.$router.push(redirect)
                                 resolve(true)
